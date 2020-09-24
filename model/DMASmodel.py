@@ -22,6 +22,7 @@ class VirusModel(Model):
 
         a = BaseAgent(1, self, CONTACTMATRIX)
         self.schedule.add(a)
+       
 
 
     def step(self):
