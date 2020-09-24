@@ -1,6 +1,8 @@
 import pandas as pd
 from posix import getcwd
 
+
+
 def getContactMatrices():
     c = list()
     overall = pd.read_excel('model/data/NLmatrices4x4.xlsx', sheet_name='NL_all_locations')
@@ -16,9 +18,5 @@ def getPop():
     popTable = popTable.set_index('Age')
     return popTable.iloc[:,3],popTable 
 
-    
-pop,popTable = getPop()
-c = getContactMatrices()
-print(pop)
-print(popTable)
+
 
