@@ -2,7 +2,7 @@ from mesa import Agent, Model
 from mesa.time import RandomActivation
 import numpy as np
 from random import randint
-from agents.baseAgent import BaseAgent
+from agents import BaseAgent
 
 
 class VirusModel(Model):
