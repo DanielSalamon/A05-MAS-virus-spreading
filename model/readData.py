@@ -12,8 +12,13 @@ def getContactMatrices():
     return c
 
 def getPop():
-    return pd.read_excel('model/data/NLdemographics.xlsx',sheet_name='4x4')
-pop = getPop()
+    popTable = pd.read_excel('model/data/NLdemographics.xlsx',sheet_name='4x4')
+    popTable = popTable.set_index('Age')
+    return popTable.iloc[:,3],popTable 
+
+    
+pop,popTable = getPop()
 c = getContactMatrices()
 print(pop)
+print(popTable)
 
