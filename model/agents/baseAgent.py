@@ -46,27 +46,28 @@ class BaseAgent(Agent): # Basic agent
             print("Im agent number: " + str(self.unique_id))
             print("My current position is: " + str(self.position) + "\n")
 
-    
-
-    def meetingChance(self, num):
-        remainder = num%1
-        people = num - remainder 
-        if(remainder > rand.random()):
-            people += 1
-        people = int(people)
-        return people
-
-    def findMeetingNum(self):
-        ageindex = 0
-        settingindex = 0
-        for settings in self.contactMatrix:
-            for people in settings.iloc[self.ageIndex,:]:
-                self.toMeet.iloc[settingindex,ageindex] = meetingChance(self,people)
-                ageindex += 1
-            ageindex = 0
-            settingindex += 1
-
-
     def infected(self):
         self.status = "I"
+    
+
+def meetingChance(self, num):
+    remainder = num%1
+    people = num - remainder 
+    if(remainder > rand.random()):
+        people += 1
+    people = int(people)
+    return people
+
+def findMeetingNum(self):
+    ageindex = 0
+    settingindex = 0
+    for settings in self.contactMatrix:
+        for people in settings.iloc[self.ageIndex,:]:
+            self.toMeet.iloc[settingindex,ageindex] = meetingChance(self,people)
+            ageindex += 1
+        ageindex = 0
+        settingindex += 1
+
+
+    
 

@@ -4,13 +4,14 @@ from os import getcwd
 
 
 def getContactMatrices():
+    matrixPath = 'model/data/NLmatrices4x4.xlsx'
     c = list()
 
-    overall = pd.read_excel('data/NLmatrices4x4.xlsx', sheet_name='NL_all_locations')
-    home = pd.read_excel('data/NLmatrices4x4.xlsx', sheet_name='NL_home')
-    work = pd.read_excel('data/NLmatrices4x4.xlsx', sheet_name='NL_work')
-    school = pd.read_excel('data/NLmatrices4x4.xlsx', sheet_name='NL_school')
-    other = pd.read_excel('data/NLmatrices4x4.xlsx', sheet_name='NL_other')
+    overall = pd.read_excel(matrixPath, sheet_name='NL_all_locations')
+    home = pd.read_excel(matrixPath, sheet_name='NL_home')
+    work = pd.read_excel(matrixPath, sheet_name='NL_work')
+    school = pd.read_excel(matrixPath, sheet_name='NL_school')
+    other = pd.read_excel(matrixPath, sheet_name='NL_other')
     c = [overall,home,work,school,other]
     return c
 
