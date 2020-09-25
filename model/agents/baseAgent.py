@@ -19,9 +19,10 @@ class BaseAgent(Agent): # Basic agent
 
         self.contactMatrix = contactMatrix
         self.toMeet = pd.DataFrame(np.zeros((5, 4)),index=['all', 'home', 'work','school','other'])
-        self.haveMet = pd.DataFrame(np.zeros((5, 4)),index=['all', 'home', 'work','school','other'])
+        #self.haveMet = pd.DataFrame(np.zeros((5, 4)),index=['all', 'home', 'work','school','other'])
         self.toMeet.columns = ['child', 'youngAdult', 'adult','old']
-        self.haveMet.columns = ['child', 'youngAdult', 'adult','old']
+        #self.haveMet.columns = ['child', 'youngAdult', 'adult','old']
+        self.toMeetTotal = 0
 
         self.ageIndex = 1
     
@@ -43,9 +44,7 @@ class BaseAgent(Agent): # Basic agent
         else:
             findMeetingNum(self)
             print(self.toMeet)
-            print(all(self.toMeet))
-            print(self.haveMet)
-            print(all(self.haveMet))
+            print(self.toMeetTotal)
             print("Im agent number: " + str(self.unique_id))
             print("My current position is: " + str(self.position) + "\n")
 
@@ -70,6 +69,7 @@ def findMeetingNum(self):
             ageindex += 1
         ageindex = 0
         settingindex += 1
+    self.toMeetTotal = self.toMeet.values.sum()
 
 def getToMeet(self):
     return self.toMeet
