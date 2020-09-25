@@ -5,6 +5,7 @@ import random as rand
 from random import randint
 from agents.baseAgent import *
 from readData import getContactMatrices
+from
 
 CONTACTMATRIX = getContactMatrices()
 
@@ -14,6 +15,9 @@ class VirusModel(Model):
 
         self.popN = popN
         self.schedule = RandomActivation(self)
+        self.agents = list()
+        self.houses
+        self.
         # Create agents
         # for i in range(self.popN):
         #     a = BaseAgent(i, self)
@@ -27,6 +31,9 @@ class VirusModel(Model):
     def step(self):
         self.schedule.step()
         #print(self.status)
+
+def assignAgents(self):
+    for agent in self.agents:
 
 
 a = getContactMatrices()
