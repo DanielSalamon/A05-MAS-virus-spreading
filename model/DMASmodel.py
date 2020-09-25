@@ -13,7 +13,6 @@ class VirusModel(Model):
     def __init__(self, popN):
 
         self.popN = popN
-        
         self.schedule = RandomActivation(self)
         # Create agents
         # for i in range(self.popN):

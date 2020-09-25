@@ -43,6 +43,9 @@ class BaseAgent(Agent): # Basic agent
         else:
             findMeetingNum(self)
             print(self.toMeet)
+            print(all(self.toMeet))
+            print(self.haveMet)
+            print(all(self.haveMet))
             print("Im agent number: " + str(self.unique_id))
             print("My current position is: " + str(self.position) + "\n")
 
@@ -68,6 +71,6 @@ def findMeetingNum(self):
         ageindex = 0
         settingindex += 1
 
-
-    
+def getToMeet(self):
+    return self.toMeet
 
