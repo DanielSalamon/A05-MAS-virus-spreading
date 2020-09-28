@@ -4,6 +4,7 @@ import random as rand
 import pandas as pd
 import numpy as np
 
+
 class BaseAgent(Agent): # Basic agent
     
     def __init__(self, unique_id, model, contactMatrix):
@@ -25,6 +26,12 @@ class BaseAgent(Agent): # Basic agent
         self.toMeetTotal = 0
 
         self.ageIndex = 1
+
+        self.house = 0
+        self.work = 0
+        self.school = 0
+        self.other = 0
+
     
     def change(self):
         if self.status == 'S':
@@ -50,7 +57,26 @@ class BaseAgent(Agent): # Basic agent
 
     def infected(self):
         self.status = "I"
-    
+
+    def getHouse(self):
+        return self.house
+    def getWork(self):
+        return self.work
+    def getOther(self):
+        return self.other
+    def getSchool(self):
+        return self.school
+    def getToMeet(self):
+        return self.toMeet
+
+    def setHouse(self, house):
+        self.house = house
+    def setWork(self, work):
+        self.work = work
+    def setOther(self, other):
+        self.other = other
+    def setSchool(self, school):
+        self.school = school
 
 def meetingChance(self, num):
     remainder = num%1
@@ -71,6 +97,4 @@ def findMeetingNum(self):
         settingindex += 1
     self.toMeetTotal = self.toMeet.values.sum()
 
-def getToMeet(self):
-    return self.toMeet
 

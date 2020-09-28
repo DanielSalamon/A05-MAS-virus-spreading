@@ -4,7 +4,7 @@ from os import getcwd
 
 
 def getContactMatrices():
-    matrixPath = 'model/data/NLmatrices4x4.xlsx'
+    matrixPath = 'data/NLmatrices4x4.xlsx'
     c = list()
 
     overall = pd.read_excel(matrixPath, sheet_name='NL_all_locations')

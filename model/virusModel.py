@@ -1,10 +1,10 @@
-from mesa import Agent, Model
-from mesa.time import RandomActivation
 import numpy as np
 import random as rand
-from random import randint
-from agents.baseAgent import *
-from readData import getContactMatrices
+from mesa import Agent, Model
+from mesa.time import RandomActivation
+from model.fileIO.readData import getContactMatrices
+from model.places import Places
+from model.agents import BaseAgent, ChildAgent, AdultAgent, YoungAgent, OldAgent
 
 CONTACTMATRIX = getContactMatrices()
 
@@ -15,16 +15,33 @@ class VirusModel(Model):
         self.popN = popN
         self.schedule = RandomActivation(self)
         self.agents = list()
-        self.houses
+        self.places = Places(self)
         # Create agents
         # for i in range(self.popN):
         #     a = BaseAgent(i, self)
         #     self.schedule.add(a)
 
-        a = BaseAgent(1, self, CONTACTMATRIX)
+        a = ChildAgent(1, self, CONTACTMATRIX)
+        b = YoungAgent(2, self, CONTACTMATRIX)
+        c = AdultAgent(3, self, CONTACTMATRIX)
+        d = OldAgent(4, self, CONTACTMATRIX)
+
+        self.agents.append(a)
+        self.agents.append(b)
+        self.agents.append(c)
+        self.agents.append(d)
+
+        self.places.placeAgents()
+        
+        a.getHouse().display()
+        b.getHouse().display()
+        c.getHouse().display()
+        d.getHouse().display()
+        
         self.schedule.add(a)
        
-
+    def getAgents(self):
+        return self.agents
 
     def step(self):
         self.schedule.step()

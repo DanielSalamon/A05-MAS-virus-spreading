@@ -1,24 +1,23 @@
-from model.agents import baseAgent
-import areas as ar
-import virusModel as vm
+from model.areas import Home, Other, School, Work
+from model.agents.baseAgent import *
 
 class Places():
 
-    def __init__(self, model):
+    def __init__(self, virusModel):
 
-        self.model = model
+        self.model = virusModel
         self.workplaces = list()
         self.homes = list()
         self.schools = list()
         self.others = list()
     
-    def placeAgents():
-        agents = vm.getAgents()
+    def placeAgents(self):
+        agents = self.model.getAgents()
 
-        newHome = ar.Home()
-        newSchool = ar.School()
-        newOther = ar.Other()
-        newWork = ar.Work()
+        newHome = Home()
+        newSchool = School()
+        newOther = Other()
+        newWork = Work()
 
         self.homes.append(newHome)
         self.schools.append(newSchool)
@@ -30,20 +29,25 @@ class Places():
             newSchool.addMember(agent)
             newOther.addMember(agent)
             newWork.addMember(agent)
+            
+            agent.house = newHome
+            agent.school = newSchool
+            agent.other = newOther
+            agent.work = newWork
 
             
             if newHome.isFull():
-                newHome = ar.Home()
-                self.append(newHome)
+                newHome = Home()
+                self.homes.append(newHome)
             if newSchool.isFull():
-                newSchool = ar.School()
-                self.append(newHome)
+                newSchool = School()
+                self.schools.append(newHome)
             if newOther.isFull():
-                newOther = ar.Other()
-                self.append(newHome)
+                newOther = Other()
+                self.others.append(newHome)
             if newWork.isFull():
-                newWork = ar.Work()
-                self.append(newHome)    
+                newWork = Work()
+                self.workplaces.append(newHome)    
 
 
 
