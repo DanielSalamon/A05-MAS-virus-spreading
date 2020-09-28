@@ -33,10 +33,10 @@ class VirusModel(Model):
 
         self.places.placeAgents()
         
-        a.getHouse().display()
-        b.getHouse().display()
-        c.getHouse().display()
-        d.getHouse().display()
+        a.house.display()
+        b.house.display()
+        c.house.display()
+        d.house.display()
         
         self.schedule.add(a)
        
@@ -46,10 +46,6 @@ class VirusModel(Model):
     def step(self):
         self.schedule.step()
         #print(self.status)
-
-def assignAgents(self):
-   # for agent in self.agents:
-    pass
 
 a = getContactMatrices()
 # t = transmission rate

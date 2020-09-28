@@ -6,7 +6,6 @@ class ChildAgent(BaseAgent):
       super().__init__(unique_id, model, contactMatrix)
 
       # We need to set the fixed values, based on research
-
       self.status = "susceptible"                    
       self.prob_infect = 0.5                
       self.prob_infected = 0.2              

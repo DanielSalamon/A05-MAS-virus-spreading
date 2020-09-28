@@ -21,9 +21,6 @@ class Area():
                 self.full = True
         return not self.full
     
-    def isFull(self):
-        return self.full
-
     def display(self):
         print('num of Children: '+str(size(self.children)))
         print('num of YoungAdults: '+str(size(self.youngAdults)))
@@ -31,11 +28,11 @@ class Area():
         print('num of Elderly: '+str(size(self.elderly)))
 
 def sortAgent(self, agent):
-        if isinstance(agent, ChildAgent):
-            self.children.append(agent)
-        if isinstance(agent, YoungAgent):
-            self.youngAdults.append(agent)
-        if isinstance(agent, AdultAgent):
-            self.adults.append(agent)
-        if isinstance(agent, OldAgent):
-            self.elderly.append(agent)
+    if isinstance(agent, ChildAgent):
+        self.children.append(agent)
+    if isinstance(agent, YoungAgent):
+        self.youngAdults.append(agent)
+    if isinstance(agent, AdultAgent):
+        self.adults.append(agent)
+    if isinstance(agent, OldAgent):
+        self.elderly.append(agent)

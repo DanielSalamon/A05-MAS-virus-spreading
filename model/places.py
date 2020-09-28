@@ -34,18 +34,17 @@ class Places():
             agent.school = newSchool
             agent.other = newOther
             agent.work = newWork
-
             
-            if newHome.isFull():
+            if newHome.full:
                 newHome = Home()
                 self.homes.append(newHome)
-            if newSchool.isFull():
+            if newSchool.full:
                 newSchool = School()
                 self.schools.append(newHome)
-            if newOther.isFull():
+            if newOther.full:
                 newOther = Other()
                 self.others.append(newHome)
-            if newWork.isFull():
+            if newWork.full:
                 newWork = Work()
                 self.workplaces.append(newHome)    
 

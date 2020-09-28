@@ -58,25 +58,6 @@ class BaseAgent(Agent): # Basic agent
     def infected(self):
         self.status = "I"
 
-    def getHouse(self):
-        return self.house
-    def getWork(self):
-        return self.work
-    def getOther(self):
-        return self.other
-    def getSchool(self):
-        return self.school
-    def getToMeet(self):
-        return self.toMeet
-
-    def setHouse(self, house):
-        self.house = house
-    def setWork(self, work):
-        self.work = work
-    def setOther(self, other):
-        self.other = other
-    def setSchool(self, school):
-        self.school = school
 
 def meetingChance(self, num):
     remainder = num%1
