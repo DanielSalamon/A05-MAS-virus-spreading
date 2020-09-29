@@ -1,8 +1,9 @@
 from numpy import size
 from model.agents import ChildAgent, OldAgent, AdultAgent, YoungAgent
 
+
 class Area():
-    def __init__(self,idNum = 0):
+    def __init__(self, idNum=0):
         self.idNum = idNum
         self.capacity = 1
         self.memNum = 0
@@ -14,24 +15,20 @@ class Area():
         self.youngAdults = list()
         self.adults = list()
         self.elderly = list()
-        self.members = [self.children, self.youngAdults, self.adults, self.elderly]
+        self.members = [self.children,
+                        self.youngAdults, self.adults, self.elderly]
 
     def addMember(self, agent):
         if not self.full:
-            sortAgent(self,agent)
+            sortAgent(self, agent)
             self.memNum += 1
             if self.capacity == self.memNum:
                 self.full = True
-    
-    def display(self):
-        print('num of Children: '+str(size(self.children)))
-        print('num of YoungAdults: '+str(size(self.youngAdults)))
-        print('num of Adults: '+str(size(self.adults)))
-        print('num of Elderly: '+str(size(self.elderly)))
 
     def meet(self, agent1, agent2):
-
+        #meeting code goes here
         pass
+
 
 def sortAgent(self, agent):
     if isinstance(agent, ChildAgent):
@@ -46,4 +43,3 @@ def sortAgent(self, agent):
     if isinstance(agent, OldAgent):
         self.elderly.append(agent)
         self.members[3] = self.elderly
-

@@ -11,6 +11,7 @@ from model.agents import BaseAgent, ChildAgent, AdultAgent, YoungAgent, OldAgent
 CONTACTMATRIX = getContactMatrices()
 POP = getPop()
 
+
 class VirusModel(Model):
 
     def __init__(self):
@@ -35,7 +36,7 @@ class VirusModel(Model):
         # self.agents.append(c)
         # self.agents.append(d)
 
-        # self.places.placeAgents()    
+        # self.places.placeAgents()
         # self.schedule.add(a)
         # self.schedule.add(b)
         # self.schedule.add(c)
@@ -45,7 +46,6 @@ class VirusModel(Model):
             self.schedule.add(agent)
             findMeetingNum(agent)
 
-       
     def getAgents(self):
         return self.agents
 
@@ -53,31 +53,33 @@ class VirusModel(Model):
         self.schedule.step()
         print(gatherMeetings(self))
 
+
 def gatherMeetings(virusModel):
-    agentMeetings = [agent.numberOfPeopleMet for agent in virusModel.schedule.agents]
-    x = sum  (agentMeetings)
+    agentMeetings = [
+        agent.numberOfPeopleMet for agent in virusModel.schedule.agents]
+    x = sum(agentMeetings)
     return x
+
 
 def createPopulation(self):
     iD = 0
     agents = list()
-    for i in range(POP[0]):#children
-        newAgent = ChildAgent(iD,self,CONTACTMATRIX)
+    for i in range(POP[0]):  # children
+        newAgent = ChildAgent(iD, self, CONTACTMATRIX)
         agents.append(newAgent)
-        iD+=1
-    for i in range(POP[1]):#youngadults
-        newAgent = YoungAgent(iD,self,CONTACTMATRIX)
+        iD += 1
+    for i in range(POP[1]):  # youngadults
+        newAgent = YoungAgent(iD, self, CONTACTMATRIX)
         agents.append(newAgent)
-        iD+=1
-    for i in range(POP[2]):#adults
-        newAgent = AdultAgent(iD,self,CONTACTMATRIX)
+        iD += 1
+    for i in range(POP[2]):  # adults
+        newAgent = AdultAgent(iD, self, CONTACTMATRIX)
         agents.append(newAgent)
-        iD+=1
-    for i in range(POP[3]):#elderly
-        newAgent = OldAgent(iD,self,CONTACTMATRIX)
+        iD += 1
+    for i in range(POP[3]):  # elderly
+        newAgent = OldAgent(iD, self, CONTACTMATRIX)
         agents.append(newAgent)
-        iD+=1
-    
+        iD += 1
+
     rand.shuffle(agents)
     return agents
-        

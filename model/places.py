@@ -1,6 +1,7 @@
 from model.areas import Home, Other, School, Work, All
 from model.agents.baseAgent import *
 
+
 class Places():
 
     def __init__(self, virusModel):
@@ -11,7 +12,7 @@ class Places():
         self.schools = list()
         self.others = list()
         self.all = list()
-    
+
     def placeAgents(self):
         agents = self.model.agents
         idNum = 1
@@ -34,8 +35,7 @@ class Places():
             newOther.addMember(agent)
             newWork.addMember(agent)
             newAll.addMember(agent)
-            
-            
+
             agent.settings[0] = newAll
             agent.settings[1] = newHome
             agent.settings[2] = newWork
@@ -52,10 +52,4 @@ class Places():
                 self.others.append(newHome)
             if newWork.full:
                 newWork = Work(2)
-                self.workplaces.append(newHome)    
-
-
-
-
-    
-    
+                self.workplaces.append(newHome)

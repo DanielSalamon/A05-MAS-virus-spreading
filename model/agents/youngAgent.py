@@ -1,7 +1,6 @@
 from model.agents.baseAgent import BaseAgent
 
 class YoungAgent(BaseAgent):
-
   def __init__(self, unique_id, model, contactMatrix):
       super().__init__(unique_id, model, contactMatrix)
       self.ageIndex = 1
