@@ -1,15 +1,8 @@
 import model.virusModel as vm
 
 model = vm.VirusModel()
-print('Day 1')
-model.step()
-print('Day 2')
-model.step()
-print('Day 3')
-model.step()
-print('Day 4')
-model.step()
-print('Day 5')
-model.step()
-print('Day 6')
-model.step()
+
+days = 6
+for day in range(1,days+1):
+    print('Day '+ str(day))
+    model.step()
