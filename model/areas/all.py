@@ -1,7 +1,6 @@
 from .area import Area
-
-class Other(Area):
+class All(Area):
     def __init__(self,idNum):
         super().__init__(idNum)
-        self.capacity = 50
-        self.areaType = 'other'
+        self.capacity = 99999
+        self.areaType = 'all'

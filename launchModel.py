@@ -1,4 +1,15 @@
 import model.virusModel as vm
 
-model = vm.VirusModel(10)
+model = vm.VirusModel()
+print('Day 1')
+model.step()
+print('Day 2')
+model.step()
+print('Day 3')
+model.step()
+print('Day 4')
+model.step()
+print('Day 5')
+model.step()
+print('Day 6')
 model.step()

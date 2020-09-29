@@ -4,22 +4,17 @@ from os import getcwd
 
 
 def getContactMatrices():
-    matrixPath = 'data/NLmatrices4x4.xlsx'
+    matrixPath = 'data/NLmatrices4x4Modified.xlsx'
     c = list()
 
-    overall = pd.read_excel(matrixPath, sheet_name='NL_all_locations')
-    home = pd.read_excel(matrixPath, sheet_name='NL_home')
-    work = pd.read_excel(matrixPath, sheet_name='NL_work')
-    school = pd.read_excel(matrixPath, sheet_name='NL_school')
-    other = pd.read_excel(matrixPath, sheet_name='NL_other')
+    overall = pd.read_excel(matrixPath, sheet_name='NL_all_locations',header=None).values
+    home = pd.read_excel(matrixPath, sheet_name='NL_home',header=None).values
+    work = pd.read_excel(matrixPath, sheet_name='NL_work',header=None).values
+    school = pd.read_excel(matrixPath, sheet_name='NL_school',header=None).values
+    other = pd.read_excel(matrixPath, sheet_name='NL_other',header=None).values
     c = [overall,home,work,school,other]
     return c
 
 def getPop():
-    popTable = pd.read_excel('data/NLdemographics.xlsx',sheet_name='4x4')
-    popTable = popTable.set_index('Age')
-    return popTable.iloc[:,3],popTable 
-
-
-
-getContactMatrices()
+    popTable = pd.read_excel('data/NLdemographics.xlsx',sheet_name='4x4').values
+    return popTable[:,4]

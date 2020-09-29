@@ -16,21 +16,22 @@ class BaseAgent(Agent): # Basic agent
         self.transition = 0          
         self.mask = False                   # Wearing mask or not
         self.position = (randint(1,100), randint(1,100))               # Position on the map
-        self.prob_death = 0.0               # Probability of dying by Covid-19
+        self.prob_death = 0.0  
+                     # Probability of dying by Covid-19
 
         self.contactMatrix = contactMatrix
-        self.toMeet = pd.DataFrame(np.zeros((5, 4)),index=['all', 'home', 'work','school','other'])
-        #self.haveMet = pd.DataFrame(np.zeros((5, 4)),index=['all', 'home', 'work','school','other'])
+        self.toMeet = pd.DataFrame(np.zeros((5, 4)),index=['all', 'house', 'work','school','other'])
         self.toMeet.columns = ['child', 'youngAdult', 'adult','old']
-        #self.haveMet.columns = ['child', 'youngAdult', 'adult','old']
-        self.toMeetTotal = 0
+        self.settings = ['all', 'house', 'work', 'school', 'other']
+        self.ageIndex = 0
+        self.numberOfPeopleMet = 0
+        self.peopleMet = [0,0]
+        self.countdown = 0
 
-        self.ageIndex = 1
+        self.day = 0
 
-        self.house = 0
-        self.work = 0
-        self.school = 0
-        self.other = 0
+
+        
 
     
     def change(self):
@@ -49,15 +50,17 @@ class BaseAgent(Agent): # Basic agent
         elif self.status == 'I':
             print('a')   
         else:
-            findMeetingNum(self)
-            print(self.toMeet)
-            print(self.toMeetTotal)
-            print("Im agent number: " + str(self.unique_id))
-            print("My current position is: " + str(self.position) + "\n")
+            self.day += 1
+            self.peopleMet *=0
+            self.numberOfPeopleMet = 0
+            #print(self.toMeet)
+            pickAgents(self)
+            #print("Im agent number: " + str(self.unique_id))
+            #print("   I met " + str(self.numberOfPeopleMet) + " today!")
+            
 
     def infected(self):
         self.status = "I"
-
 
 def meetingChance(self, num):
     remainder = num%1
@@ -71,11 +74,55 @@ def findMeetingNum(self):
     ageindex = 0
     settingindex = 0
     for settings in self.contactMatrix:
-        for people in settings.iloc[self.ageIndex,:]:
+        for people in settings[self.ageIndex,:]:
             self.toMeet.iloc[settingindex,ageindex] = meetingChance(self,people)
             ageindex += 1
         ageindex = 0
         settingindex += 1
     self.toMeetTotal = self.toMeet.values.sum()
 
+def pickAgents(self):
+    
+    settingIndex = 0
+    peopleIndex = 0
+    for settingIndex in range(4):
+        for peopleIndex in range(4):
+            self.countdown = self.toMeet.iloc[settingIndex,peopleIndex]
+            if self.countdown > 0:
+                while not self.countdown <= 0:
+                    meetAtLocation(self,settingIndex, peopleIndex)
+
+def meetAtLocation(self, locationIndex, personIndex):
+    
+    person = False
+    location = self.settings[locationIndex]
+    person = getPerson(self, personIndex, location)
+    if person: 
+        if not person == self and  not person.unique_id in self.peopleMet:
+            contact(self, person, location)
+    self.countdown -= 1
+
+def getPerson(self, personIndex, location):
+    
+    agentType = location.members[personIndex]    
+    if len(agentType) > 0:
+        return getRandomMem(agentType, len(agentType))
+
+def getRandomMem(ageGroup, memNum):
+    randomMemLocation = rand.randint(0,memNum-1)
+    return ageGroup[randomMemLocation]
+
+def contact(self, agent, location):
+    #print(location.areaType)
+    self.peopleMet.append(agent.unique_id)
+    location.meet(self, agent) 
+    self.numberOfPeopleMet += 1
+
+
+
+
+
+
+
+    
 
