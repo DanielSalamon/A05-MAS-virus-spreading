@@ -61,7 +61,7 @@ class VirusModel(Model):
                 if(agent.transition_to_removed * agent.prob_death > rand.random()):  # probability of death or recover
                     agent.status = "removed"
                     self.agents.remove(agent)
-                    self.removed_agents.append(agent.ageIndex)
+                    self.removed_agents.append(agent.ageIndex) # append the age group of dead agent
                 else: 
                     agent.status = "susceptible"
 

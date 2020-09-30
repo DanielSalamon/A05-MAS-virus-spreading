@@ -13,6 +13,9 @@ def draw_disease_plot(data_frame):
 	    plt.xlabel("Day")
 	    plt.ylabel("Number of agents")
 	    plt.legend(['susceptible', 'exposed', 'infected', 'removed'])
+	    plt.title("Population statistics over whole simulation")
 
 
 	plt.show()
+
+

@@ -11,13 +11,14 @@ for day in range(1,days+1):
     print('Day '+ str(day))
     model.step()
     data_collector.print_overall_stats(model)
-    data_collector.collect_disease_stats_of_the_day(model)
+    data_collector.collect_daily_data(model)
 
 
 # Summary of the simulation
 
+data_collector.print_summary()
+
+# Visualisation
 summary = data_collector.simulation_summary()
-print("Summary of the simulation:\n")
-print(summary)
-draw_disease_plot(summary)
+draw_disease_plot(summary[0])
 
