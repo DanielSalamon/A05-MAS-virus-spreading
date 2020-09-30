@@ -9,7 +9,7 @@ from model.places import Places
 from model.agents import BaseAgent, ChildAgent, AdultAgent, YoungAgent, OldAgent, findMeetingNum
 
 CONTACTMATRIX = getContactMatrices()
-POP = getPop()
+POP  = getPop()
 
 
 class VirusModel(Model):
@@ -21,6 +21,7 @@ class VirusModel(Model):
         self.agents = createPopulation(self)
         self.places = Places(self)
         self.places.placeAgents()
+        self.removed_agents = list()
         # Create agents
         # for i in range(self.popN):
         #     a = BaseAgent(i, self)
@@ -50,6 +51,22 @@ class VirusModel(Model):
         return self.agents
 
     def step(self):
+
+        # firstly, calculate transitions for all agents in simulation:
+        for agent in self.agents:
+            if agent.status == "exposed":
+                if(agent.transition_to_infected > rand.random()):   # probability of Exposed -> Infected
+                    agent.status = "infected"
+            elif agent.status == "infected":
+                if(agent.transition_to_removed * agent.prob_death > rand.random()):  # probability of death or recover
+                    agent.status = "removed"
+                    self.agents.remove(agent)
+                    self.removed_agents.append(agent.ageIndex)
+                else: 
+                    agent.status = "susceptible"
+
+
+        # Secondly, do all of the meetings of current day:
         self.schedule.step()
         print(gatherMeetings(self))
 

@@ -1,5 +1,6 @@
 from numpy import size
 from model.agents import ChildAgent, OldAgent, AdultAgent, YoungAgent
+import random as rand
 
 
 class Area():
@@ -26,7 +27,17 @@ class Area():
                 self.full = True
 
     def meet(self, agent1, agent2):
-        #meeting code goes here
+        
+        if agent1.status == "susceptible" and agent2.status == "infected": 
+            prob_of_infection = agent1.prob_infected * agent2.prob_infect
+            if (prob_of_infection > rand.random()):
+                agent1.status = "exposed"
+
+        elif agent1.status == "infected" and agent2.status == "susceptible": 
+            prob_of_infection = agent1.prob_infect * agent2.prob_infected
+            if (prob_of_infection > rand.random()):
+                agent2.status = "exposed"
+
         pass
 
 

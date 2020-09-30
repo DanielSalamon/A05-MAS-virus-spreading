@@ -13,7 +13,9 @@ class BaseAgent(Agent):  # Basic agent
         self.prob_infect = 0                # Probability of infect another agent
         self.prob_infected = 0              # Probability of getting infected
         self.chanceOfChange = 0
-        self.transition = 0
+        self.transition_to_infected = 1 - np.exp(-1/6) # from paper, average incubation period: 4-6 days
+        self.transition_to_removed = 1 - (1-np.exp(-1/7)) # according to paper, probability of recover = 1 - exp(1/di)
+                                                         # where di is average infection duration
         self.mask = False                   # Wearing mask or not
         self.position = (randint(1, 100), randint(1, 100)
                          )               # Position on the map
@@ -119,3 +121,4 @@ def contact(self, agent, location):
     self.peopleMet.append(agent.unique_id)
     location.meet(self, agent)
     self.numberOfPeopleMet += 1
+

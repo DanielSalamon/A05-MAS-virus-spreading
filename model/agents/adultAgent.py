@@ -11,4 +11,4 @@ class AdultAgent(BaseAgent):
         self.prob_infected = 0.2
         self.mask = False
         self.position = (1, 0)
-        self.prob_death = 0.7
+        self.prob_death = 0.5
