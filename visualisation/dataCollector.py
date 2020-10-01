@@ -186,4 +186,25 @@ class DataCollector:
 		print("-----------------------------------------------")
 		print("Olds summary: \n")
 		print(summary[4])
+		print("-----------------------------------------------")
 		
+		
+		
+
+	def total_dead_agents(self, model):
+
+		dead_agents = {0 : [0],
+					   1 : [0],
+					   2 : [0],
+					   3 : [0]}
+
+		for age in model.removed_agents:
+			dead_agents[age][0] += 1
+
+		data_frame = pd.DataFrame.from_dict(dead_agents)
+		data_frame.columns = ["Children", "Young", "Adults", "Olds"]
+
+		print("Total dead agents: \n")
+		print(data_frame)
+
+		return data_frame

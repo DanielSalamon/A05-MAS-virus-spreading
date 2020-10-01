@@ -99,4 +99,11 @@ def createPopulation(self):
         iD += 1
 
     rand.shuffle(agents)
+
+    # Take random sample ofa agents that will be infected at the beginning of the simulation
+
+    index = np.random.randint(len(agents), size=100)
+    for ind in index:
+        agents[ind].status = "infected"
+
     return agents

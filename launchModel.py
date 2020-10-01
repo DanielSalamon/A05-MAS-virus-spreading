@@ -1,12 +1,12 @@
 import model.virusModel as vm
 import visualisation.dataCollector as dc
-from visualisation.visualisation import draw_disease_plot
+from visualisation.visualisation import *
 
 
 model = vm.VirusModel()
 data_collector = dc.DataCollector()
 
-days = 7
+days = 365
 for day in range(1,days+1):
     print('Day '+ str(day))
     model.step()
@@ -17,8 +17,10 @@ for day in range(1,days+1):
 # Summary of the simulation
 
 data_collector.print_summary()
+df = data_collector.total_dead_agents(model)
 
 # Visualisation
+
 summary = data_collector.simulation_summary()
-draw_disease_plot(summary[0])
+perform_visualisation(summary, df)
 
