@@ -16,6 +16,7 @@ class BaseAgent(Agent):  # Basic agent
         self.transition_to_infected = 1 - np.exp(-1/6) # from paper, average incubation period: 4-6 days
         self.transition_to_removed = 1 - (1-np.exp(-1/7)) # according to paper, probability of recover = 1 - exp(1/di)
                                                          # where di is average infection duration
+        self.incubation_counter = 0
         self.mask = False                   # Wearing mask or not
         self.position = (randint(1, 100), randint(1, 100)
                          )               # Position on the map
