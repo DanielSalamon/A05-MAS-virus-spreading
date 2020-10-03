@@ -8,7 +8,7 @@ def MainProgram(live_graph=True):
 	model = vm.VirusModel()
 	data_collector = dc.DataCollector()
 
-	days = 30
+	days = 100
 	for day in range(1,days+1):
 	    print('Day '+ str(day))
 	    model.step()
@@ -26,20 +26,25 @@ def MainProgram(live_graph=True):
 	# Visualisation
 
 	summary = data_collector.simulation_summary()
-	# perform_visualisation(summary, df)
+	perform_visualisation(summary, df)
 
 
 
 if __name__ == '__main__':
 
+	live_graph_status = True
 
-    f = open("visualisation\\visual_data.txt", "w")
-    f.close()
+	if live_graph_status :
+	    f = open("visualisation\\visual_data.txt", "w")
+	    f.close()
 
 
 
-    p = Process(target=live_animation)
-    p.start()
-    MainProgram(live_graph=True)
-    p.join()
+	    p = Process(target=live_animation)
+	    p.start()
+	    MainProgram(live_graph=live_graph_status)
+	    p.join()
+
+	else:			
+		MainProgram(live_graph=False)
 
