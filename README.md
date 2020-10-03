@@ -7,5 +7,5 @@ Epidemic of COVID-19 has a significant impact on people's lifestyle all over the
 
 - Make sure you have Python 3.7.6 installed
 - `python -m pip install --upgrade pip`
-- `pip install requirements.txt`
+- `pip install -r requirements.txt`
 - `python launchModel.py`
