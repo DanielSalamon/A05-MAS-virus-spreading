@@ -37,15 +37,23 @@ class VirusModel(Model):
         # firstly, calculate transitions for all agents in simulation:
         for agent in self.agents:
             if agent.status == "exposed":
-                if(agent.transition_to_infected > rand.random()):   # probability of Exposed -> Infected
-                    agent.status = "infected"
-            elif agent.status == "infected":
-                if(agent.transition_to_removed * agent.prob_death > rand.random()):  # probability of death or recover
-                    agent.status = "removed"
-                    self.agents.remove(agent)
-                    self.removed_agents.append(agent.ageIndex) # append the age group of dead agent
+                if agent.incubation_counter == 6: # average incubation period = 4-6 days
+                    if(agent.transition_to_infected > rand.random()):   # probability of Exposed -> Infected
+                        agent.status = "infected"
+                        agent.incubation_counter = 0
                 else: 
-                    agent.status = "susceptible"
+                    agent.incubation_counter += 1
+            elif agent.status == "infected":
+                if agent.incubation_counter == 7: # average infection duration = 3-7 days
+                    if(agent.transition_to_removed * agent.prob_death > rand.random()):  # probability of death or recover
+                        agent.status = "removed"
+                        self.agents.remove(agent)
+                        self.removed_agents.append(agent.ageIndex) # append the age group of dead agent
+                    else: 
+                        agent.status = "susceptible"
+                        agent.incubation_counter = 0
+                else:
+                    agent.incubation_counter += 1
 
 
         # Secondly, do all of the meetings of current day:
