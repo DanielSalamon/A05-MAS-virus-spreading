@@ -6,46 +6,28 @@ from mesa.time import RandomActivation
 from model.fileIO.readData import getContactMatrices
 from model.fileIO.readData import getPop
 from model.places import Places
-from model.agents import BaseAgent, ChildAgent, AdultAgent, YoungAgent, OldAgent, findMeetingNum
+from model.agents import BaseAgent, ChildAgent, AdultAgent, YoungAgent, OldAgent
 
 CONTACTMATRIX = getContactMatrices()
 POP  = getPop()
+CHILDSETTINGS = [False, .5,.5,.5] #schoolOut, allScale, workScale, otherScale
+YOUNGSETTINGS = [False, .5,.5,.5]
+ADULTSETTINGS = [False, 1,1,1]
+ELDERLYSETTINGS = [False, .5,.5,.5]
 
 
 class VirusModel(Model):
 
     def __init__(self):
-
-        self.popN = sum(POP)
+        self.popN, self.newPop = getPopDistribution(200)
         self.schedule = RandomActivation(self)
-        self.agents = createPopulation(self)
+        self.agents = createPopulation(self, self.newPop)
         self.places = Places(self)
         self.places.placeAgents()
         self.removed_agents = list()
-        # Create agents
-        # for i in range(self.popN):
-        #     a = BaseAgent(i, self)
-        #     self.schedule.add(a)
-
-        # a = ChildAgent(1, self, CONTACTMATRIX)
-        # b = YoungAgent(2, self, CONTACTMATRIX)
-        # c = AdultAgent(3, self, CONTACTMATRIX)
-        # d = OldAgent(4, self, CONTACTMATRIX)
-
-        # self.agents.append(a)
-        # self.agents.append(b)
-        # self.agents.append(c)
-        # self.agents.append(d)
-
-        # self.places.placeAgents()
-        # self.schedule.add(a)
-        # self.schedule.add(b)
-        # self.schedule.add(c)
-        # self.schedule.add(d)
-
         for agent in self.agents:
             self.schedule.add(agent)
-            findMeetingNum(agent)
+            agent.findMeetingNum()
 
     def getAgents(self):
         return self.agents
@@ -78,22 +60,22 @@ def gatherMeetings(virusModel):
     return x
 
 
-def createPopulation(self):
+def createPopulation(self, pop):
     iD = 0
     agents = list()
-    for i in range(POP[0]):  # children
+    for i in range(pop[0]):  # children
         newAgent = ChildAgent(iD, self, CONTACTMATRIX)
         agents.append(newAgent)
         iD += 1
-    for i in range(POP[1]):  # youngadults
+    for i in range(pop[1]):  # youngadults
         newAgent = YoungAgent(iD, self, CONTACTMATRIX)
         agents.append(newAgent)
         iD += 1
-    for i in range(POP[2]):  # adults
+    for i in range(pop[2]):  # adults
         newAgent = AdultAgent(iD, self, CONTACTMATRIX)
         agents.append(newAgent)
         iD += 1
-    for i in range(POP[3]):  # elderly
+    for i in range(pop[3]):  # elderly
         newAgent = OldAgent(iD, self, CONTACTMATRIX)
         agents.append(newAgent)
         iD += 1
@@ -107,3 +89,27 @@ def createPopulation(self):
         agents[ind].status = "infected"
 
     return agents
+
+def getPopDistribution(num = 1000):
+    oldPopSize = sum(POP)
+    newPopSize = num
+    newPop = [0,0,0,0]
+    for i in range(4):
+        newPop[i] = int((POP[i]/oldPopSize) * newPopSize)
+    print(newPop)
+    return newPopSize, newPop
+
+def manipulatePop(self):
+    for agent in self.agents:
+        if isinstance(agent, ChildAgent):
+            agent.manipulationValues = CHILDSETTINGS
+        elif isinstance(agent, YoungAgent):
+            agent.manipulationValues = YOUNGSETTINGS
+        elif isinstance(agent, AdultAgent):
+            agent.manipulationValues = ADULTSETTINGS
+        else:
+            agent.manipulationValues = ELDERLYSETTINGS
+        agent.manipulate()
+
+        
+

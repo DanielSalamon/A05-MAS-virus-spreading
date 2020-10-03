@@ -41,6 +41,7 @@ class Places():
             agent.settings[2] = newWork
             agent.settings[3] = newSchool
             agent.settings[4] = newOther
+            
             if newHome.full:
                 newHome = Home(2)
                 self.homes.append(newHome)

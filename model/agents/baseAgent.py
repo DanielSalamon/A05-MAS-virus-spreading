@@ -11,11 +11,10 @@ class BaseAgent(Agent):  # Basic agent
         # 4 possible states, based on paper: Susceptible, Exposed, Infected, Remove
         self.status = ""
         self.prob_infect = 0                # Probability of infect another agent
-        self.prob_infected = 0              # Probability of getting infected
+        self.prob_infected = 0.2              # Probability of getting infected
         self.chanceOfChange = 0
-        self.transition_to_infected = 1 - np.exp(-1/6) # from paper, average incubation period: 4-6 days
-        self.transition_to_removed = 1 - (1-np.exp(-1/7)) # according to paper, probability of recover = 1 - exp(1/di)
-                                                         # where di is average infection duration
+        self.transition = 0
+        self.transition_to_removed = 0
         self.mask = False                   # Wearing mask or not
         self.position = (randint(1, 100), randint(1, 100)
                          )               # Position on the map
@@ -23,16 +22,19 @@ class BaseAgent(Agent):  # Basic agent
         # Probability of dying by Covid-19
 
         self.contactMatrix = contactMatrix
-        self.toMeet = pd.DataFrame(np.zeros((5, 4)), index=[
-                                   'all', 'house', 'work', 'school', 'other'])
+        self.toMeet = pd.DataFrame(np.zeros((5, 4)), index=['all', 'house', 'work', 'school', 'other'])
+        self.toMeetBase = pd.DataFrame(np.zeros((5, 4)), index=['all', 'house', 'work', 'school', 'other'])
         self.toMeet.columns = ['child', 'youngAdult', 'adult', 'old']
+        self.toMeetBase.columns = ['child', 'youngAdult', 'adult', 'old']
+
         self.settings = ['all', 'house', 'work', 'school', 'other']
         self.ageIndex = 0
         self.numberOfPeopleMet = 0
         self.peopleMet = [0, 0]
         self.countdown = 0
-
         self.day = 0
+
+        self.manipulationValues = [False, 1, 1, 1]
 
     def change(self):
         if self.status == 'S':
@@ -43,23 +45,38 @@ class BaseAgent(Agent):  # Basic agent
             self.status == 'R'
 
     def step(self):
-        if self.status == 'S':
-            print('a')
-        elif self.status == 'E':
-            print('a')
-        elif self.status == 'I':
-            print('a')
-        else:
-            self.day += 1
-            self.peopleMet *= 0
-            self.numberOfPeopleMet = 0
-            # print(self.toMeet)
-            pickAgents(self)
-            #print("Im agent number: " + str(self.unique_id))
-            #print("   I met " + str(self.numberOfPeopleMet) + " today!")
+        self.day += 1
+        self.peopleMet *= 0
+        self.numberOfPeopleMet = 0
+        #print(self.toMeetBase)
+        pickAgents(self)
 
     def infected(self):
         self.status = "I"
+    
+    def manipulate(self):
+        temp = self.toMeetBase
+
+        if self.manipulationValues[0]: #set school meetings to off or on
+            temp.iloc[3,:] *= 0
+        temp.iloc[0,:] *= round(temp.iloc[0,:]* self.manipulationValues[1]) # scale meetings in general by certain value
+        temp.iloc[2,:] *= round(temp.iloc[0,:]* self.manipulationValues[2]) # scale meetings at work by certain value
+        temp.iloc[4,:] *= round(temp.iloc[0,:]* self.manipulationValues[3]) # scale meetings at other by certain value
+
+        self.toMeet = temp
+    
+    def findMeetingNum(self):
+        ageindex = 0
+        settingindex = 0
+        for settings in self.contactMatrix:
+            for people in settings[self.ageIndex, :]:
+                self.toMeetBase.iloc[settingindex,
+                                ageindex] = meetingChance(self, people)
+                ageindex += 1
+            ageindex = 0
+            settingindex += 1
+        self.toMeetTotal = self.toMeetBase.values.sum()
+        self.manipulate()
 
 
 def meetingChance(self, num):
@@ -71,17 +88,7 @@ def meetingChance(self, num):
     return people
 
 
-def findMeetingNum(self):
-    ageindex = 0
-    settingindex = 0
-    for settings in self.contactMatrix:
-        for people in settings[self.ageIndex, :]:
-            self.toMeet.iloc[settingindex,
-                             ageindex] = meetingChance(self, people)
-            ageindex += 1
-        ageindex = 0
-        settingindex += 1
-    self.toMeetTotal = self.toMeet.values.sum()
+
 
 
 def pickAgents(self):
@@ -121,4 +128,5 @@ def contact(self, agent, location):
     self.peopleMet.append(agent.unique_id)
     location.meet(self, agent)
     self.numberOfPeopleMet += 1
+
 
