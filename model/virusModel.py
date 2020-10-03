@@ -10,16 +10,17 @@ from model.agents import BaseAgent, ChildAgent, AdultAgent, YoungAgent, OldAgent
 
 CONTACTMATRIX = getContactMatrices()
 POP  = getPop()
-CHILDSETTINGS = [False, .5,.5,.5] #schoolOut, allScale, workScale, otherScale
-YOUNGSETTINGS = [False, .5,.5,.5]
-ADULTSETTINGS = [False, 1,1,1]
-ELDERLYSETTINGS = [False, .5,.5,.5]
+POPSIZE = 1000
+CHILDSETTINGS = [True, 0.5, 0.5, 0.5] #schoolOut, allScale, workScale, otherScale
+YOUNGSETTINGS = [True, 0.5, 0.5, 0.5]
+ADULTSETTINGS = [True, 0.5, 0.5, 0.5]
+ELDERLYSETTINGS = [True, 0.5, 0.5, 0.5]
 
 
 class VirusModel(Model):
 
     def __init__(self):
-        self.popN, self.newPop = getPopDistribution(200)
+        self.popN, self.newPop = getPopDistribution(POPSIZE)
         self.schedule = RandomActivation(self)
         self.agents = createPopulation(self, self.newPop)
         self.places = Places(self)
@@ -28,6 +29,7 @@ class VirusModel(Model):
         for agent in self.agents:
             self.schedule.add(agent)
             agent.findMeetingNum()
+            manipulateAgent(agent)
 
     def getAgents(self):
         return self.agents
@@ -36,29 +38,32 @@ class VirusModel(Model):
 
         # firstly, calculate transitions for all agents in simulation:
         for agent in self.agents:
-            if agent.status == "exposed":
-                if agent.incubation_counter == 6: # average incubation period = 4-6 days
-                    if(agent.transition_to_infected > rand.random()):   # probability of Exposed -> Infected
-                        agent.status = "infected"
-                        agent.incubation_counter = 0
-                else: 
-                    agent.incubation_counter += 1
-            elif agent.status == "infected":
-                if agent.incubation_counter == 7: # average infection duration = 3-7 days
-                    if(agent.transition_to_removed * agent.prob_death > rand.random()):  # probability of death or recover
-                        agent.status = "removed"
-                        self.agents.remove(agent)
-                        self.removed_agents.append(agent.ageIndex) # append the age group of dead agent
-                    else: 
-                        agent.status = "susceptible"
-                        agent.incubation_counter = 0
-                else:
-                    agent.incubation_counter += 1
-
+            self.transition(agent)
 
         # Secondly, do all of the meetings of current day:
         self.schedule.step()
         print(gatherMeetings(self))
+    
+    def transition(self,agent):
+        if agent.status == "exposed":
+            if agent.incubation_counter == 6: # average incubation period = 4-6 days
+                if(agent.transition_to_infected > rand.random()):   # probability of Exposed -> Infected
+                    agent.status = "infected"
+                    agent.incubation_counter = 0
+            else: 
+                agent.incubation_counter += 1
+        elif agent.status == "infected":
+            if agent.incubation_counter == 7: # average infection duration = 3-7 days
+                if(agent.transition_to_removed * agent.prob_death > rand.random()):  # probability of death or recover
+                    agent.status = "removed"
+                    self.agents.remove(agent)
+                    agent.die()
+                    self.removed_agents.append(agent.ageIndex) # append the age group of dead agent
+                else: 
+                    agent.status = "susceptible"
+                    agent.incubation_counter = 0
+            else:
+                agent.incubation_counter += 1
 
 
 def gatherMeetings(virusModel):
@@ -91,12 +96,14 @@ def createPopulation(self, pop):
     rand.shuffle(agents)
 
     # Take random sample ofa agents that will be infected at the beginning of the simulation
-
-    index = np.random.randint(len(agents), size=100)
-    for ind in index:
-        agents[ind].status = "infected"
+    for index in np.random.randint(len(agents), size=10):
+        agents[index].status = "infected"
 
     return agents
+
+    def manipulatepop(self):
+        for agent in self.agents:
+            manipulateAgent(agent)
 
 def getPopDistribution(num = 1000):
     oldPopSize = sum(POP)
@@ -107,17 +114,18 @@ def getPopDistribution(num = 1000):
     print(newPop)
     return newPopSize, newPop
 
-def manipulatePop(self):
-    for agent in self.agents:
-        if isinstance(agent, ChildAgent):
-            agent.manipulationValues = CHILDSETTINGS
-        elif isinstance(agent, YoungAgent):
-            agent.manipulationValues = YOUNGSETTINGS
-        elif isinstance(agent, AdultAgent):
-            agent.manipulationValues = ADULTSETTINGS
-        else:
-            agent.manipulationValues = ELDERLYSETTINGS
-        agent.manipulate()
+def manipulateAgent(agent):
+    if isinstance(agent, ChildAgent):
+        agent.manipulationValues = CHILDSETTINGS
+    elif isinstance(agent, YoungAgent):
+        agent.manipulationValues = YOUNGSETTINGS
+    elif isinstance(agent, AdultAgent):
+        agent.manipulationValues = ADULTSETTINGS
+    else:
+        agent.manipulationValues = ELDERLYSETTINGS
+
+    agent.manipulate()
+
 
         
 

@@ -38,7 +38,19 @@ class Area():
             if (prob_of_infection > rand.random()):
                 agent2.status = "exposed"
 
-        pass
+    def removeAgent(self, agent):
+        if isinstance(agent, ChildAgent):
+            self.children.remove(agent)
+            self.members[0] = self.children
+        if isinstance(agent, YoungAgent):
+            self.youngAdults.remove(agent)
+            self.members[1] = self.youngAdults
+        if isinstance(agent, AdultAgent):
+            self.adults.remove(agent)
+            self.members[2] = self.adults
+        if isinstance(agent, OldAgent):
+            self.elderly.remove(agent)
+            self.members[3] = self.elderly
 
 
 def sortAgent(self, agent):
@@ -54,3 +66,5 @@ def sortAgent(self, agent):
     if isinstance(agent, OldAgent):
         self.elderly.append(agent)
         self.members[3] = self.elderly
+
+

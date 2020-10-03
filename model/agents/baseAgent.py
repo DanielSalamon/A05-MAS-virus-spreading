@@ -35,7 +35,6 @@ class BaseAgent(Agent):  # Basic agent
         self.peopleMet = [0, 0]
         self.countdown = 0
         self.day = 0
-
         self.manipulationValues = [False, 1, 1, 1]
 
     def change(self):
@@ -57,14 +56,19 @@ class BaseAgent(Agent):  # Basic agent
         self.status = "I"
     
     def manipulate(self):
+        schoolOut = self.manipulationValues[0]
+
+        allScale = self.manipulationValues[1]
+        workScale = self.manipulationValues[2]
+        otherScale = self.manipulationValues[3]
+        schoolScale = 1
+        houseScale = 1
+
         temp = self.toMeetBase
 
-        if self.manipulationValues[0]: #set school meetings to off or on
-            temp.iloc[3,:] *= 0
-        temp.iloc[0,:] *= round(temp.iloc[0,:]* self.manipulationValues[1]) # scale meetings in general by certain value
-        temp.iloc[2,:] *= round(temp.iloc[0,:]* self.manipulationValues[2]) # scale meetings at work by certain value
-        temp.iloc[4,:] *= round(temp.iloc[0,:]* self.manipulationValues[3]) # scale meetings at other by certain value
-
+        if schoolOut: #set school meetings to off or on
+            schoolScale = 0
+        temp = temp.mul([allScale,houseScale,workScale,schoolScale,otherScale], axis = 0)
         self.toMeet = temp
     
     def findMeetingNum(self):
@@ -72,13 +76,15 @@ class BaseAgent(Agent):  # Basic agent
         settingindex = 0
         for settings in self.contactMatrix:
             for people in settings[self.ageIndex, :]:
-                self.toMeetBase.iloc[settingindex,
-                                ageindex] = meetingChance(self, people)
+                self.toMeetBase.iloc[settingindex, ageindex] = people
                 ageindex += 1
             ageindex = 0
             settingindex += 1
         self.toMeetTotal = self.toMeetBase.values.sum()
-        self.manipulate()
+    
+    def die(self):
+        for location in self.settings:
+            location.removeAgent(self)
 
 
 def meetingChance(self, num):
@@ -98,7 +104,8 @@ def pickAgents(self):
     peopleIndex = 0
     for settingIndex in range(4):
         for peopleIndex in range(4):
-            self.countdown = self.toMeet.iloc[settingIndex, peopleIndex]
+            people = round(self.toMeet.iloc[settingIndex, peopleIndex])
+            self.countdown = meetingChance(self, people)
             if self.countdown > 0:
                 while not self.countdown <= 0:
                     meetAtLocation(self, settingIndex, peopleIndex)

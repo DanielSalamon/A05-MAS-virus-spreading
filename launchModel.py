@@ -6,7 +6,7 @@ from visualisation.visualisation import *
 model = vm.VirusModel()
 data_collector = dc.DataCollector()
 
-days = 365
+days = 150
 for day in range(1,days+1):
     print('Day '+ str(day))
     model.step()
