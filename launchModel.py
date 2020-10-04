@@ -4,7 +4,8 @@ from visualisation.visualisation import *
 from multiprocessing import Process
 
 DAYS = 50
-AGENTS = 500
+
+AGENTS = 1000
 
 def MainProgram(live_graph=True):
 	model = vm.VirusModel(AGENTS)
@@ -32,8 +33,6 @@ def MainProgram(live_graph=True):
 
 
 if __name__ == '__main__':
-
-	number_of_days = 365
 	live_graph_status = True
 
 
@@ -45,9 +44,9 @@ if __name__ == '__main__':
 
 	    p = Process(target=live_animation)
 	    p.start()
-	    MainProgram(number_of_days,live_graph=live_graph_status)
+	    MainProgram(live_graph=live_graph_status)
 	    p.join()
 
 	else:			
-		MainProgram(number_of_days,live_graph=False)
+		MainProgram(live_graph=False)
 

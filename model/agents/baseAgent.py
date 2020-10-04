@@ -10,48 +10,34 @@ class BaseAgent(Agent):  # Basic agent
         super().__init__(unique_id, model)
         # 4 possible states, based on paper: Susceptible, Exposed, Infected, Remove
         self.status = ""
-        
+        self.contactMatrix = contactMatrix
         self.chanceOfChange = 0
         self.transition_to_infected = 1 - np.exp(-1/6) # from paper, average incubation period: 4-6 days
         
         self.incubation_counter = 0
-        self.mask = False                   # Wearing mask or not
-        self.position = (randint(1, 100), randint(1, 100)
-                         )               # Position on the map
-        self.prob_death = 0.0
-        # Probability of dying by Covid-19
-
-        self.contactMatrix = contactMatrix
-        self.toMeet = pd.DataFrame(np.zeros((5, 4)), index=['all', 'house', 'work', 'school', 'other'])
+        self.mask = False # Wearing mask or not
+        self.prob_death = 0.0 # Probability of dying by Covid-19
+        
+        self.toMeet = pd.DataFrame(np.zeros((5, 4)), index=['all', 'house', 'work', 'school', 'other']) #meeting lists for each agent
         self.toMeetBase = pd.DataFrame(np.zeros((5, 4)), index=['all', 'house', 'work', 'school', 'other'])
         self.toMeet.columns = ['child', 'youngAdult', 'adult', 'old']
         self.toMeetBase.columns = ['child', 'youngAdult', 'adult', 'old']
 
-        self.settings = ['all', 'house', 'work', 'school', 'other']
+        self.settings = ['all', 'house', 'work', 'school', 'other'] # list of all places agent belongs (later initialised to objects)
+
         self.ageIndex = 0
+
         self.numberOfPeopleMet = 0
         self.peopleMet = [0, 0]
         self.countdown = 0
-        self.day = 0
-        self.manipulationValues = [False, 1, 1, 1]
 
-    def change(self):
-        if self.status == 'S':
-            self.status == 'E'
-        elif self.status == 'E':
-            self.status == 'I'
-        elif self.status == 'I':
-            self.status == 'R'
+        self.manipulationValues = [False, 1, 1, 1] # referrs to the social distancing strategies an agent adopts
 
     def step(self):
-        self.day += 1
-        self.peopleMet *= 0
-        self.numberOfPeopleMet = 0
+        self.peopleMet *= 0 # reset list of met agents to empty
+        self.numberOfPeopleMet = 0 #reset number of people met to 0
         #print(self.toMeetBase)
-        pickAgents(self)
-
-    def infected(self):
-        self.status = "I"
+        pickAgents(self) # find agents to meet
     
     def manipulate(self):
         schoolOut = self.manipulationValues[0]
@@ -92,7 +78,6 @@ def meetingChance(self, num):
         people += 1
     people = int(people)
     return people
-
 
 
 
