@@ -33,7 +33,9 @@ def MainProgram(live_graph=True):
 
 if __name__ == '__main__':
 
+	number_of_days = 365
 	live_graph_status = True
+
 
 	if live_graph_status :
 	    f = open("visualisation\\visual_data.txt", "w")
@@ -43,9 +45,9 @@ if __name__ == '__main__':
 
 	    p = Process(target=live_animation)
 	    p.start()
-	    MainProgram(live_graph=live_graph_status)
+	    MainProgram(number_of_days,live_graph=live_graph_status)
 	    p.join()
 
 	else:			
-		MainProgram(live_graph=False)
+		MainProgram(number_of_days,live_graph=False)
 
