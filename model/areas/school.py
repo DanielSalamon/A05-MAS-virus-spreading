@@ -2,7 +2,7 @@ from .area import Area
 
 
 class School(Area):
-    def __init__(self, idNum):
-        super().__init__(idNum)
+    def __init__(self):
+        super().__init__()
         self.capacity = 250
         self.areaType = 'school'

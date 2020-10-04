@@ -15,7 +15,7 @@ class BaseAgent(Agent):  # Basic agent
         self.transition_to_infected = 1 - np.exp(-1/6) # from paper, average incubation period: 4-6 days
         
         self.incubation_counter = 0
-        self.mask = False # Wearing mask or not
+        self.mask = False # Wearing mask or not NOT YET IMPLEMENTED IN CODE 
         self.prob_death = 0.0 # Probability of dying by Covid-19
         
         self.toMeet = pd.DataFrame(np.zeros((5, 4)), index=['all', 'house', 'work', 'school', 'other']) #meeting lists for each agent
@@ -39,11 +39,11 @@ class BaseAgent(Agent):  # Basic agent
         #print(self.toMeetBase)
         pickAgents(self) # find agents to meet
     
-    def manipulate(self):
-        schoolOut = self.manipulationValues[0]
+    def manipulate(self): # function to change the meetings list for specific locations
+        schoolOut = self.manipulationValues[0] # boolean to indicate whether school has been suspended
 
-        allScale = self.manipulationValues[1]
-        workScale = self.manipulationValues[2]
+        allScale = self.manipulationValues[1]   # next three are a scaler by which the contacts will be multiplied 0 - 1 
+        workScale = self.manipulationValues[2]  # 1 indicates nothing changes and 0 indicated that no contacts will be made
         otherScale = self.manipulationValues[3]
         schoolScale = 1
         houseScale = 1
@@ -55,7 +55,7 @@ class BaseAgent(Agent):  # Basic agent
         temp = temp.mul([allScale,houseScale,workScale,schoolScale,otherScale], axis = 0)
         self.toMeet = temp
     
-    def findMeetingNum(self):
+    def findMeetingNum(self): # create the meeting list according to contact matrix, happens when agents are initialised to the model
         ageindex = 0
         settingindex = 0
         for settings in self.contactMatrix:
@@ -66,23 +66,21 @@ class BaseAgent(Agent):  # Basic agent
             settingindex += 1
         self.toMeetTotal = self.toMeetBase.values.sum()
     
-    def die(self):
+    def die(self):  # if agent dies it must be removed from all of its locations
         for location in self.settings:
             location.removeAgent(self)
 
 
-def meetingChance(self, num):
-    remainder = num % 1
-    people = num - remainder
+def meetingChance(self, num): # helper function to deal with decimals
+    remainder = num % 1 # chance of meeting an extra agent based on decimal
+    people = num - remainder # natural number correspinding to people an agent will meet
     if(remainder > rand.random()):
         people += 1
     people = int(people)
     return people
 
 
-
-
-def pickAgents(self):
+def pickAgents(self): # selects a random agents according to agents meeting list
     settingIndex = 0
     peopleIndex = 0
     for settingIndex in range(4):
@@ -94,29 +92,28 @@ def pickAgents(self):
                     meetAtLocation(self, settingIndex, peopleIndex)
 
 
-def meetAtLocation(self, locationIndex, personIndex):
+def meetAtLocation(self, locationIndex, personIndex): #collects the agent to meet and the location to meet at
     person = False
     location = self.settings[locationIndex]
     person = getPerson(self, personIndex, location)
     if person:
-        if not person == self and not person.unique_id in self.peopleMet:
+        if not person == self and not person.unique_id in self.peopleMet: # if the agent picked exists and is not self, meet that person
             contact(self, person, location)
     self.countdown -= 1
 
 
-def getPerson(self, personIndex, location):
+def getPerson(self, personIndex, location): # select person of certain type from location member lists
     agentType = location.members[personIndex]
     if len(agentType) > 0:
         return getRandomMem(agentType, len(agentType))
 
 
-def getRandomMem(ageGroup, memNum):
+def getRandomMem(ageGroup, memNum): # helper function to get random member out of list
     randomMemLocation = rand.randint(0, memNum-1)
     return ageGroup[randomMemLocation]
 
 
-def contact(self, agent, location):
-    # print(location.areaType)
+def contact(self, agent, location): # make contact with an agent 
     self.peopleMet.append(agent.unique_id)
     location.meet(self, agent)
     self.numberOfPeopleMet += 1

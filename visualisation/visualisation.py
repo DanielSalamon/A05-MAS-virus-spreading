@@ -3,6 +3,7 @@ import matplotlib.animation as animation
 import numpy as np
 import pandas as pd 
 
+# draw plots
 
 def draw_disease_plot(data_frame):
 

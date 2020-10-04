@@ -5,31 +5,31 @@ from mesa import Model, Agent
 from mesa.time import RandomActivation
 from model.fileIO.readData import getContactMatrices
 from model.fileIO.readData import getPop
-from model.places import Places
+from model.simulationInitialiser import SimulationInitialiser
 from model.agents import BaseAgent, ChildAgent, AdultAgent, YoungAgent, OldAgent
 
 CONTACTMATRIX = getContactMatrices()
 POP  = getPop()
-
+# social distancing behaviours for different agents in different settings
 CHILDSETTINGS = [False, 1, 1, 1] #schoolOut, allScale, workScale, otherScale
 YOUNGSETTINGS = [False, 1, 1, 1]
 ADULTSETTINGS = [False, 1, 1, 1]
 ELDERLYSETTINGS = [False, 1, 1, 1]
 
 
-class VirusModel(Model):
+class VirusModel(Model): # actual simulation 
 
     def __init__(self, popSize):
-        self.popN, self.newPop = getPopDistribution(popSize)
-        self.schedule = RandomActivation(self)
-        self.agents = createPopulation(self, self.newPop)
-        self.places = Places(self)
-        self.places.placeAgents()
-        self.removed_agents = list()
-        for agent in self.agents:
+        self.popN, self.newPop = getPopDistribution(popSize) #total number of agents, list of number of agents per type
+        self.schedule = RandomActivation(self) # mesa schedule, agents activate in random order 
+        self.agents = createPopulation(self, self.newPop) # population of agents created and stored
+        self.simInit = SimulationInitialiser(self) # initialise agent locations and memberships to locations
+        self.simInit.placeAgents()
+        self.removed_agents = list() # list of dead agents
+        for agent in self.agents: # initialise the agent meeting plans and add them to step schedule
             self.schedule.add(agent)
             agent.findMeetingNum()
-            manipulateAgent(agent)
+            manipulateAgent(agent)#change social distancing behaviours if necessary
 
     def getAgents(self):
         return self.agents
@@ -66,14 +66,14 @@ class VirusModel(Model):
                 agent.incubation_counter += 1
 
 
-def gatherMeetings(virusModel):
+def gatherMeetings(virusModel): # collect number of meetings for later analysis
     agentMeetings = [
         agent.numberOfPeopleMet for agent in virusModel.schedule.agents]
     x = sum(agentMeetings)
     return x
 
 
-def createPopulation(self, pop):
+def createPopulation(self, pop): # create a population according to real population distribution of the Netherlands
     iD = 0
     agents = list()
     for i in range(pop[0]):  # children
@@ -105,7 +105,7 @@ def createPopulation(self, pop):
         for agent in self.agents:
             manipulateAgent(agent)
 
-def getPopDistribution(num = 1000):
+def getPopDistribution(num = 1000):#get population distribution based off real data
     oldPopSize = sum(POP)
     newPopSize = num
     newPop = [0,0,0,0]
@@ -114,7 +114,7 @@ def getPopDistribution(num = 1000):
     print(newPop)
     return newPopSize, newPop
 
-def manipulateAgent(agent):
+def manipulateAgent(agent): # set manipulation settings for certain agent
     if isinstance(agent, ChildAgent):
         agent.manipulationValues = CHILDSETTINGS
     elif isinstance(agent, YoungAgent):

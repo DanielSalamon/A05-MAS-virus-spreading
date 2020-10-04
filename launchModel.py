@@ -3,9 +3,9 @@ import visualisation.dataCollector as dc
 from visualisation.visualisation import *
 from multiprocessing import Process
 
-DAYS = 50
+DAYS = 50 # desired days model will run
 
-AGENTS = 1000
+AGENTS = 1000 # desired agents model will have
 
 def MainProgram(live_graph=True):
 	model = vm.VirusModel(AGENTS)
@@ -35,12 +35,9 @@ def MainProgram(live_graph=True):
 if __name__ == '__main__':
 	live_graph_status = True
 
-
 	if live_graph_status :
 	    f = open("visualisation\\visual_data.txt", "w")
 	    f.close()
-
-
 
 	    p = Process(target=live_animation)
 	    p.start()
