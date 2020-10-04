@@ -54,7 +54,7 @@ class VirusModel(Model):
                 agent.incubation_counter += 1
         elif agent.status == "infected":
             if agent.incubation_counter == 7: # average infection duration = 3-7 days
-                if(agent.transition_to_removed * agent.prob_death > rand.random()):  # probability of death or recover
+                if(agent.prob_death > rand.random()):  # probability of death or recover
                     agent.status = "removed"
                     self.agents.remove(agent)
                     agent.die()

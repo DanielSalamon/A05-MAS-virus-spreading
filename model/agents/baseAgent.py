@@ -10,12 +10,10 @@ class BaseAgent(Agent):  # Basic agent
         super().__init__(unique_id, model)
         # 4 possible states, based on paper: Susceptible, Exposed, Infected, Remove
         self.status = ""
-        self.prob_infect = 0                # Probability of infect another agent
-        self.prob_infected = 0.2              # Probability of getting infected
+        
         self.chanceOfChange = 0
         self.transition_to_infected = 1 - np.exp(-1/6) # from paper, average incubation period: 4-6 days
-        self.transition_to_removed = 1 - (1-np.exp(-1/7)) # according to paper, probability of recover = 1 - exp(1/di)
-                                                         # where di is average infection duration
+        
         self.incubation_counter = 0
         self.mask = False                   # Wearing mask or not
         self.position = (randint(1, 100), randint(1, 100)

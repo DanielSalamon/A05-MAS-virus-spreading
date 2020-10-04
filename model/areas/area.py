@@ -18,6 +18,9 @@ class Area():
         self.elderly = list()
         self.members = [self.children,
                         self.youngAdults, self.adults, self.elderly]
+        self.attack_rate = 0.1 # estimation from paper "Estimation of Individual Probabilities of COVID-19 
+        # Infection, Hospitalization, and Death From A County-level Contact of Unknown infection Status"
+
 
     def addMember(self, agent):
         if not self.full:
@@ -29,13 +32,11 @@ class Area():
     def meet(self, agent1, agent2):
         
         if agent1.status == "susceptible" and agent2.status == "infected": 
-            prob_of_infection = agent1.prob_infected * agent2.prob_infect
-            if (prob_of_infection > rand.random()):
+            if (self.attack_rate > rand.random()):
                 agent1.status = "exposed"
 
         elif agent1.status == "infected" and agent2.status == "susceptible": 
-            prob_of_infection = agent1.prob_infect * agent2.prob_infected
-            if (prob_of_infection > rand.random()):
+            if (self.attack_rate > rand.random()):
                 agent2.status = "exposed"
 
     def removeAgent(self, agent):

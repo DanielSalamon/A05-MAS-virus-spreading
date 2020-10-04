@@ -8,7 +8,7 @@ def MainProgram(live_graph=True):
 	model = vm.VirusModel()
 	data_collector = dc.DataCollector()
 
-	days = 100
+	days = 365
 	for day in range(1,days+1):
 	    print('Day '+ str(day))
 	    model.step()
