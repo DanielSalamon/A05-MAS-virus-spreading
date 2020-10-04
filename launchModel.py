@@ -3,13 +3,14 @@ import visualisation.dataCollector as dc
 from visualisation.visualisation import *
 from multiprocessing import Process
 
+DAYS = 50
+AGENTS = 500
 
 def MainProgram(live_graph=True):
-	model = vm.VirusModel()
+	model = vm.VirusModel(AGENTS)
 	data_collector = dc.DataCollector()
 
-	days = 365
-	for day in range(1,days+1):
+	for day in range(1,DAYS+2):
 	    print('Day '+ str(day))
 	    model.step()
 	    data_collector.print_overall_stats(model)

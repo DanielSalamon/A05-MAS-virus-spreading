@@ -10,17 +10,17 @@ from model.agents import BaseAgent, ChildAgent, AdultAgent, YoungAgent, OldAgent
 
 CONTACTMATRIX = getContactMatrices()
 POP  = getPop()
-POPSIZE = 1000
-CHILDSETTINGS = [True, 0.5, 0.5, 0.5] #schoolOut, allScale, workScale, otherScale
-YOUNGSETTINGS = [True, 0.5, 0.5, 0.5]
-ADULTSETTINGS = [True, 0.5, 0.5, 0.5]
-ELDERLYSETTINGS = [True, 0.5, 0.5, 0.5]
+
+CHILDSETTINGS = [False, 1, 1, 1] #schoolOut, allScale, workScale, otherScale
+YOUNGSETTINGS = [False, 1, 1, 1]
+ADULTSETTINGS = [False, 1, 1, 1]
+ELDERLYSETTINGS = [False, 1, 1, 1]
 
 
 class VirusModel(Model):
 
-    def __init__(self):
-        self.popN, self.newPop = getPopDistribution(POPSIZE)
+    def __init__(self, popSize):
+        self.popN, self.newPop = getPopDistribution(popSize)
         self.schedule = RandomActivation(self)
         self.agents = createPopulation(self, self.newPop)
         self.places = Places(self)
