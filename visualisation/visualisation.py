@@ -102,6 +102,10 @@ def animate(i):
 
 	age_axis.clear()
 	condition_axis.clear()
+	age_axis.set_title('Live graph of Agents')
+	age_axis.set_ylabel('Number of Agents')
+	condition_axis.set_ylabel('Number of Agents')
+	condition_axis.set_xlabel('Day')
 	# young_axis.clear()
 	# adult_axis.clear()
 	# old_axis.clear()
@@ -122,5 +126,6 @@ def animate(i):
 
 
 def live_animation():
+
 	ani = animation.FuncAnimation(fig, animate, interval=1000)
 	plt.show()
