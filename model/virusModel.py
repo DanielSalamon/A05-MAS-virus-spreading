@@ -19,8 +19,9 @@ ELDERLYSETTINGS = [False, 1, 1, 1]
 
 class VirusModel(Model): # actual simulation 
 
-    def __init__(self, popSize):
+    def __init__(self, popSize, maskChance):
         self.popN, self.newPop = getPopDistribution(popSize) #total number of agents, list of number of agents per type
+        self.maskChance = maskChance
         self.schedule = RandomActivation(self) # mesa schedule, agents activate in random order 
         self.agents = createPopulation(self, self.newPop) # population of agents created and stored
         self.simInit = SimulationInitialiser(self) # initialise agent locations and memberships to locations
@@ -77,19 +78,19 @@ def createPopulation(self, pop): # create a population according to real populat
     iD = 0
     agents = list()
     for i in range(pop[0]):  # children
-        newAgent = ChildAgent(iD, self, CONTACTMATRIX)
+        newAgent = ChildAgent(iD, self, CONTACTMATRIX, self.maskChance)
         agents.append(newAgent)
         iD += 1
     for i in range(pop[1]):  # youngadults
-        newAgent = YoungAgent(iD, self, CONTACTMATRIX)
+        newAgent = YoungAgent(iD, self, CONTACTMATRIX, self.maskChance)
         agents.append(newAgent)
         iD += 1
     for i in range(pop[2]):  # adults
-        newAgent = AdultAgent(iD, self, CONTACTMATRIX)
+        newAgent = AdultAgent(iD, self, CONTACTMATRIX, self.maskChance)
         agents.append(newAgent)
         iD += 1
     for i in range(pop[3]):  # elderly
-        newAgent = OldAgent(iD, self, CONTACTMATRIX)
+        newAgent = OldAgent(iD, self, CONTACTMATRIX, self.maskChance)
         agents.append(newAgent)
         iD += 1
 

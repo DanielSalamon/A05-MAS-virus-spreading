@@ -29,13 +29,29 @@ class Area():
                 self.full = True
 
     def meet(self, agent1, agent2):# meeting of two agents in certain area
-        if agent1.status == "susceptible" and agent2.status == "infected": 
-            if (self.attack_rate > rand.random()):
+        if agent1.status == "susceptible" and agent2.status == "infected":
+            chance = self.infectionChance(agent1,agent2) 
+            if (chance > rand.random()):
                 agent1.status = "exposed"
 
-        elif agent1.status == "infected" and agent2.status == "susceptible": 
-            if (self.attack_rate > rand.random()):
-                agent2.status = "exposed"
+        # elif agent1.status == "infected" and agent2.status == "susceptible": 
+        #     if (self.attack_rate > rand.random()):
+        #         agent2.status = "exposed"
+
+    def infectionChance(self, agent1, agent2):
+        maskReceiveProb = 1 #TODO find the mask transmssion and reception probs
+        maskTransmitProb = 1
+        chance = self.attack_rate
+
+        if agent1.mask and agent2.mask:
+            chance = chance * maskTransmitProb * maskTransmitProb
+        elif agent1.mask:
+            chance = chance * maskReceiveProb
+        elif agent2.mask:
+            chance = chance * maskTransmitProb
+        
+        return chance
+
 
     def removeAgent(self, agent): #remove agent from corresponding list
         if isinstance(agent, ChildAgent):

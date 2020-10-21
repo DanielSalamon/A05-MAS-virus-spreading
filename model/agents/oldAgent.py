@@ -1,8 +1,8 @@
 from model.agents.baseAgent import BaseAgent
 
 class OldAgent(BaseAgent):
-  def __init__(self, unique_id, model, contactMatrix):
-      super().__init__(unique_id, model, contactMatrix)
+  def __init__(self, unique_id, model, contactMatrix, maskChance):
+      super().__init__(unique_id, model, contactMatrix, maskChance)
       self.ageIndex = 3
       self.status = "susceptible"                          
       self.mask = False                   

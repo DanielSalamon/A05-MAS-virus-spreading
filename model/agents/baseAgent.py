@@ -6,7 +6,7 @@ import numpy as np
 
 
 class BaseAgent(Agent):  # Basic agent
-    def __init__(self, unique_id, model, contactMatrix):
+    def __init__(self, unique_id, model, contactMatrix,maskChance):
         super().__init__(unique_id, model)
         # 4 possible states, based on paper: Susceptible, Exposed, Infected, Remove
         self.status = ""
@@ -15,7 +15,6 @@ class BaseAgent(Agent):  # Basic agent
         self.transition_to_infected = 1 - np.exp(-1/6) # from paper, average incubation period: 4-6 days
         
         self.incubation_counter = 0
-        self.mask = False # Wearing mask or not NOT YET IMPLEMENTED IN CODE 
         self.prob_death = 0.0 # Probability of dying by Covid-19
         
         self.toMeet = pd.DataFrame(np.zeros((5, 4)), index=['all', 'house', 'work', 'school', 'other']) #meeting lists for each agent
@@ -33,6 +32,12 @@ class BaseAgent(Agent):  # Basic agent
 
         self.manipulationValues = [False, 1, 1, 1] # referrs to the social distancing strategies an agent adopts
 
+        if maskChance > rand.random():
+            self.mask = True # Wearing mask or not NOT YET IMPLEMENTED IN CODE 
+        else:
+            self.mask + False
+
+            
     def step(self):
         self.peopleMet *= 0 # reset list of met agents to empty
         self.numberOfPeopleMet = 0 #reset number of people met to 0
