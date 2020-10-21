@@ -3,14 +3,21 @@ import visualisation.dataCollector as dc
 from visualisation.visualisation import *
 from multiprocessing import Process
 
+
 DAYS = 50 # desired days model will run
 
 AGENTS = 1000 # desired agents model will have
 
+MASKCHANCE = 1.0 # proportion of agents wearing a mask
+
 def MainProgram(live_graph=True):
-	model = vm.VirusModel(AGENTS)
+
+	model = vm.VirusModel(AGENTS,MASKCHANCE)
 	data_collector = dc.DataCollector()
 
+	begin(model, data_collector, live_graph)
+
+def begin(model, data_collector, live_graph):
 	for day in range(1,DAYS+2):
 	    print('Day '+ str(day))
 	    model.step()
@@ -29,8 +36,6 @@ def MainProgram(live_graph=True):
 
 	summary = data_collector.simulation_summary()
 	perform_visualisation(summary, df)
-
-
 
 if __name__ == '__main__':
 	live_graph_status = True

@@ -44,11 +44,11 @@ class Area():
         chance = self.attack_rate
 
         if agent1.mask and agent2.mask:
-            chance = chance * maskTransmitProb * maskTransmitProb
+            chance = maskTransmitProb * maskTransmitProb
         elif agent1.mask:
-            chance = chance * maskReceiveProb
+            chance = maskReceiveProb
         elif agent2.mask:
-            chance = chance * maskTransmitProb
+            chance = maskTransmitProb
         
         return chance
 
