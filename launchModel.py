@@ -2,6 +2,7 @@ import model.virusModel as vm
 import visualisation.dataCollector as dc
 from visualisation.visualisation import *
 from multiprocessing import Process
+from tkinter import *
 
 
 DAYS = 50 # desired days model will run
@@ -15,9 +16,6 @@ def MainProgram(live_graph=True):
 	model = vm.VirusModel(AGENTS,MASKCHANCE)
 	data_collector = dc.DataCollector()
 
-	begin(model, data_collector, live_graph)
-
-def begin(model, data_collector, live_graph):
 	for day in range(1,DAYS+2):
 	    print('Day '+ str(day))
 	    model.step()
@@ -37,7 +35,8 @@ def begin(model, data_collector, live_graph):
 	summary = data_collector.simulation_summary()
 	perform_visualisation(summary, df)
 
-if __name__ == '__main__':
+
+def begin():
 	live_graph_status = True
 
 	if live_graph_status :
@@ -51,4 +50,8 @@ if __name__ == '__main__':
 
 	else:			
 		MainProgram(live_graph=False)
+
+if __name__ == '__main__':
+	
+	begin()
 
