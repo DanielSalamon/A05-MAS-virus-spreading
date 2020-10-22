@@ -19,7 +19,7 @@ ELDERLYSETTINGS = [False, 1, 1, 1]
 
 class VirusModel(Model): # actual simulation 
 
-    def __init__(self, popSize, maskChance):
+    def __init__(self, popSize, maskChance, settings):
         self.popN, self.newPop = getPopDistribution(popSize) #total number of agents, list of number of agents per type
         self.maskChance = maskChance
         self.schedule = RandomActivation(self) # mesa schedule, agents activate in random order 
@@ -27,6 +27,7 @@ class VirusModel(Model): # actual simulation
         self.simInit = SimulationInitialiser(self) # initialise agent locations and memberships to locations
         self.simInit.placeAgents()
         self.removed_agents = list() # list of dead agents
+        self.settings = settings
         for agent in self.agents: # initialise the agent meeting plans and add them to step schedule
             self.schedule.add(agent)
             agent.findMeetingNum()
@@ -104,7 +105,7 @@ def createPopulation(self, pop): # create a population according to real populat
 
     def manipulatepop(self):
         for agent in self.agents:
-            manipulateAgent(agent)
+            manipulateAgent(self, agent)
 
 def getPopDistribution(num = 1000):#get population distribution based off real data
     oldPopSize = sum(POP)
@@ -115,15 +116,15 @@ def getPopDistribution(num = 1000):#get population distribution based off real d
     print(newPop)
     return newPopSize, newPop
 
-def manipulateAgent(agent): # set manipulation settings for certain agent
+def manipulateAgent(self, agent): # set manipulation settings for certain agent
     if isinstance(agent, ChildAgent):
-        agent.manipulationValues = CHILDSETTINGS
+        agent.manipulationValues = self.settngs[0]
     elif isinstance(agent, YoungAgent):
-        agent.manipulationValues = YOUNGSETTINGS
+        agent.manipulationValues = self.settngs[1]
     elif isinstance(agent, AdultAgent):
-        agent.manipulationValues = ADULTSETTINGS
+        agent.manipulationValues = self.settngs[2]
     else:
-        agent.manipulationValues = ELDERLYSETTINGS
+        agent.manipulationValues = self.settngs[3]
 
     agent.manipulate()
 

@@ -11,12 +11,20 @@ AGENTS = 1000 # desired agents model will have
 
 MASKCHANCE = 1.0 # proportion of agents wearing a mask
 
-def MainProgram(live_graph=True):
+SETTINGS = [False, 'none', 'none', 'none', 'none'] # choose how strict lockdown is taken into account for each agegroup 
+							   # choose restrictions as follows: 'none','minimal','moderate','severe,'total'
+							   # index0 = whether school is out or not
+							   # index1 = restrictions for children
+							   # index2 = restrictions for youngadults
+							   # index 3 = restrictions for adults
+							   # index 4 = restrictions for elderly				   	
 
-	model = vm.VirusModel(AGENTS,MASKCHANCE)
+def MainProgram(live_graph = True):
+
+	model = vm.VirusModel(AGENTS, MASKCHANCE, constructSettings())
 	data_collector = dc.DataCollector()
 
-	for day in range(1,DAYS+2):
+	for day in range(1, DAYS + 2):
 	    print('Day '+ str(day))
 	    model.step()
 	    data_collector.print_overall_stats(model)
@@ -34,6 +42,35 @@ def MainProgram(live_graph=True):
 
 	summary = data_collector.simulation_summary()
 	perform_visualisation(summary, df)
+
+def constructSettings():
+	settings = SETTINGS
+	newSettings = list()
+	for agentType in range(0,3):
+		amount = getValue(settings[agentType])
+		subsetting = [settings[0], amount, amount, amount]
+		newSettings.append(subsetting)
+	return newSettings
+
+def getValue(severity):
+	sev = severity.lower()
+	noMeasure = 1
+	minimal = 0.8
+	moderate = 0.5
+	severe = 0.2
+	total = 0
+	if sev == 'none':
+		return noMeasure
+	elif sev == 'minimal':
+		return minimal
+	elif sev == 'moderate':
+		return moderate
+	elif sev == 'severe':
+		return severe
+	elif sev == 'total':
+		return total
+	else:
+		return noMeasure
 
 
 def begin():

@@ -39,16 +39,16 @@ class Area():
         #         agent2.status = "exposed"
 
     def infectionChance(self, agent1, agent2):
-        maskReceiveProb = 1 #TODO find the mask transmssion and reception probs
-        maskTransmitProb = 1
+        maskReceiveProb = 0.5 #TODO find the mask transmssion and reception probs
+        maskTransmitProb = 0.5
         chance = self.attack_rate
 
         if agent1.mask and agent2.mask:
-            chance = maskTransmitProb * maskTransmitProb
+            chance = chance * maskTransmitProb * maskTransmitProb
         elif agent1.mask:
-            chance = maskReceiveProb
+            chance = chance * maskReceiveProb
         elif agent2.mask:
-            chance = maskTransmitProb
+            chance = chance * maskTransmitProb
         
         return chance
 
