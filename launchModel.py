@@ -6,16 +6,16 @@ from tkinter import *
 import os
 
 
-DAYS = 50 # desired days model will run
+DAYS = 50 # desired days the model will run
 
-AGENTS = 1000 # desired agents model will have
+AGENTS = 1000 # desired agents the model will have
 
-MASKCHANCE = 1.0 # proportion of agents wearing a mask
+INIT_INFECTED = 10 # number of agents infected at the beggining of the simulation
 
-INIT_INFECTED = 10 # number of agents infected at the beggining of simulaiton
+MASKCHANCE = 'all' # proportion of agents wearing a mask {'all', 'most', 'half', 'few', 'none'}
 
-SETTINGS = [False, 'none', 'none', 'none', 'none'] # choose how strict lockdown is taken into account for each agegroup 
-							   # choose restrictions as follows: 'none','minimal','moderate','severe,'total'
+SETTINGS = [False, 'none', 'none', 'none', 'none'] # choose how strict the lockdown is taken into account for each agegroup 
+							   # choose restrictions as follows: {'none','minimal','moderate','severe,'total'}
 							   # index0 = whether school is out or not
 							   # index1 = restrictions for children
 							   # index2 = restrictions for youngadults
@@ -24,8 +24,10 @@ SETTINGS = [False, 'none', 'none', 'none', 'none'] # choose how strict lockdown 
 
 
 def MainProgram(live_graph = True):
+	settings = constructSettings()
+	maskChance = getMaskChance()
 
-	model = vm.VirusModel(AGENTS, MASKCHANCE, INIT_INFECTED, constructSettings())
+	model = vm.VirusModel(AGENTS, maskChance, INIT_INFECTED, settings)
 	data_collector = dc.DataCollector()
 
 	for day in range(1, DAYS + 2):
@@ -64,9 +66,7 @@ def getValue(severity):
 	moderate = 0.5
 	severe = 0.2
 	total = 0
-	if sev == 'none':
-		return noMeasure
-	elif sev == 'minimal':
+	if sev == 'minimal':
 		return minimal
 	elif sev == 'moderate':
 		return moderate
@@ -76,6 +76,24 @@ def getValue(severity):
 		return total
 	else:
 		return noMeasure
+
+def getMaskChance():
+	chance = MASKCHANCE.lower()
+	none = 0
+	few = 0.2
+	half = 0.5
+	most = 0.8
+	all = 1
+	if chance == 'few':
+		return few
+	elif chance == 'half':
+		return half
+	elif chance == 'most':
+		return most
+	elif chance == 'all':
+		return all
+	else:
+		return none
 
 
 def begin():
