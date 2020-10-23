@@ -21,7 +21,8 @@ def draw_disease_plot(data_frame):
 	    plt.title("Population statistics over whole simulation")
 
 
-	plt.show()
+	plt.savefig("visualisation/plots/Overall.png")
+	plt.close(fig)
 
 
 
@@ -38,17 +39,29 @@ def draw_plot_by_group_age(data_frame, age_group):
 	    plt.legend(['susceptible', 'exposed', 'infected', 'removed'])
 	    plt.title("Disease statistics for age group: " + age_group)
 
+	plt.savefig("visualisation/plots/" + age_group)
+	plt.close(fig)
 
+
+
+def draw_plots_by_age_groups(data_frames, df):
+
+	img_labels = ["Child", "Young", "Adult", "Old", "Overall", "Deaths"]
+
+	for i in range(1, 5):
+		draw_plot_by_group_age(data_frames[i], img_labels[i])
+
+	draw_disease_plot(data_frames[0])
+	visualize_dead_agents(df)
+	
+	fig=plt.figure(figsize=(15, 10))
+	columns = 2
+	rows = 3
+	for i in range(1, columns*rows +1):
+	    img = plt.imread("visualisation/plots/" + img_labels[i-1] + ".png")
+	    a = fig.add_subplot(rows, columns, i)
+	    img_plot = plt.imshow(img)
 	plt.show()
-
-
-
-def draw_plots_by_age_groups(data_frames):
-
-	age_groups = ["Child", "Young", "Adult", "Old"]
-
-	for i in range(4):
-		draw_plot_by_group_age(data_frames[i], age_groups[i])
 
 
 def visualize_dead_agents(data_frame):
@@ -56,12 +69,13 @@ def visualize_dead_agents(data_frame):
 	data_frame.plot(kind="bar")
 	plt.ylabel("Number of dead agents")
 	plt.title("Dead agents per age group")
-	plt.show()
+	plt.savefig("visualisation/plots/Deaths.png")
+	plt.close()
 
 def perform_visualisation(summary, df):
-	draw_disease_plot(summary[0])
-	draw_plots_by_age_groups(summary[1:])
-	visualize_dead_agents(df)
+	#draw_disease_plot(summary[0])
+	draw_plots_by_age_groups(summary, df)
+	#visualize_dead_agents(df)
 
 fig = plt.figure()
 age_axis = fig.add_subplot(2,1,1)
