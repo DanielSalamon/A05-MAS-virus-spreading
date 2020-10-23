@@ -66,6 +66,7 @@ def perform_visualisation(summary, df):
 fig = plt.figure()
 age_axis = fig.add_subplot(2,1,1)
 condition_axis = fig.add_subplot(2,1,2)
+axis_limit = 0
 # young_axis = fig.add_subplot(1,1,1)
 # adult_axis = fig.add_subplot(1,1,1)
 # old_axis = fig.add_subplot(1,1,1)
@@ -106,6 +107,9 @@ def animate(i):
 
 	age_axis.clear()
 	condition_axis.clear()
+	global axis_limit
+	age_axis.set_xlim([0,axis_limit])
+	condition_axis.set_xlim([0,axis_limit])
 	age_axis.set_title('Live graph of Agents')
 	age_axis.set_ylabel('Number of Agents')
 	condition_axis.set_ylabel('Number of Agents')
@@ -129,7 +133,8 @@ def animate(i):
 
 
 
-def live_animation():
-
+def live_animation(axis_length):
+	global axis_limit
+	axis_limit = axis_length
 	ani = animation.FuncAnimation(fig, animate, interval=1000)
 	plt.show()

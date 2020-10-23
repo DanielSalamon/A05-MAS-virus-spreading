@@ -3,6 +3,7 @@ import visualisation.dataCollector as dc
 from visualisation.visualisation import *
 from multiprocessing import Process
 from tkinter import *
+import os
 
 
 DAYS = 50 # desired days model will run
@@ -19,7 +20,8 @@ SETTINGS = [False, 'none', 'none', 'none', 'none'] # choose how strict lockdown 
 							   # index1 = restrictions for children
 							   # index2 = restrictions for youngadults
 							   # index 3 = restrictions for adults
-							   # index 4 = restrictions for elderly				   	
+							   # index 4 = restrictions for elderly
+
 
 def MainProgram(live_graph = True):
 
@@ -80,13 +82,15 @@ def begin():
 	live_graph_status = True
 
 	if live_graph_status :
-	    f = open("visualisation\\visual_data.txt", "w")
+	    f = open("visualisation/visual_data.txt", "w")
 	    f.close()
 
-	    p = Process(target=live_animation)
+	    p = Process(target=live_animation,args = [DAYS])
 	    p.start()
 	    MainProgram(live_graph=live_graph_status)
 	    p.join()
+
+	    os.remove("visualisation/visual_data.txt")
 
 	else:			
 		MainProgram(live_graph=False)
