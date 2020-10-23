@@ -5,31 +5,34 @@ from mesa import Model, Agent
 from mesa.time import RandomActivation
 from model.fileIO.readData import getContactMatrices
 from model.fileIO.readData import getPop
-from model.places import Places
+from model.simulationInitialiser import SimulationInitialiser
 from model.agents import BaseAgent, ChildAgent, AdultAgent, YoungAgent, OldAgent
 
 CONTACTMATRIX = getContactMatrices()
 POP  = getPop()
-POPSIZE = 1000
-CHILDSETTINGS = [True, 0.5, 0.5, 0.5] #schoolOut, allScale, workScale, otherScale
-YOUNGSETTINGS = [True, 0.5, 0.5, 0.5]
-ADULTSETTINGS = [True, 0.5, 0.5, 0.5]
-ELDERLYSETTINGS = [True, 0.5, 0.5, 0.5]
+# social distancing behaviours for different agents in different settings
+CHILDSETTINGS = [False, 1, 1, 1] #schoolOut, allScale, workScale, otherScale
+YOUNGSETTINGS = [False, 1, 1, 1]
+ADULTSETTINGS = [False, 1, 1, 1]
+ELDERLYSETTINGS = [False, 1, 1, 1]
 
 
-class VirusModel(Model):
+class VirusModel(Model): # actual simulation 
 
-    def __init__(self):
-        self.popN, self.newPop = getPopDistribution(POPSIZE)
-        self.schedule = RandomActivation(self)
-        self.agents = createPopulation(self, self.newPop)
-        self.places = Places(self)
-        self.places.placeAgents()
-        self.removed_agents = list()
-        for agent in self.agents:
+    def __init__(self, popSize, maskChance, init_infected, settings ):
+        self.popN, self.newPop = getPopDistribution(popSize) #total number of agents, list of number of agents per type
+        self.maskChance = maskChance
+        self.initially_infected = init_infected # number of infected agents at the beggining of simulation
+        self.schedule = RandomActivation(self) # mesa schedule, agents activate in random order 
+        self.agents = createPopulation(self, self.newPop, self.initially_infected) # population of agents created and stored
+        self.simInit = SimulationInitialiser(self) # initialise agent locations and memberships to locations
+        self.simInit.placeAgents()
+        self.removed_agents = list() # list of dead agents
+        self.settings = settings
+        for agent in self.agents: # initialise the agent meeting plans and add them to step schedule
             self.schedule.add(agent)
             agent.findMeetingNum()
-            manipulateAgent(agent)
+            manipulateAgent(self, agent) # change social distancing behaviours if necessary
 
     def getAgents(self):
         return self.agents
@@ -66,46 +69,46 @@ class VirusModel(Model):
                 agent.incubation_counter += 1
 
 
-def gatherMeetings(virusModel):
+def gatherMeetings(virusModel): # collect number of meetings for later analysis
     agentMeetings = [
         agent.numberOfPeopleMet for agent in virusModel.schedule.agents]
     x = sum(agentMeetings)
     return x
 
 
-def createPopulation(self, pop):
+def createPopulation(self, pop, initially_infected): # create a population according to real population distribution of the Netherlands
     iD = 0
     agents = list()
     for i in range(pop[0]):  # children
-        newAgent = ChildAgent(iD, self, CONTACTMATRIX)
+        newAgent = ChildAgent(iD, self, CONTACTMATRIX, self.maskChance)
         agents.append(newAgent)
         iD += 1
     for i in range(pop[1]):  # youngadults
-        newAgent = YoungAgent(iD, self, CONTACTMATRIX)
+        newAgent = YoungAgent(iD, self, CONTACTMATRIX, self.maskChance)
         agents.append(newAgent)
         iD += 1
     for i in range(pop[2]):  # adults
-        newAgent = AdultAgent(iD, self, CONTACTMATRIX)
+        newAgent = AdultAgent(iD, self, CONTACTMATRIX, self.maskChance)
         agents.append(newAgent)
         iD += 1
     for i in range(pop[3]):  # elderly
-        newAgent = OldAgent(iD, self, CONTACTMATRIX)
+        newAgent = OldAgent(iD, self, CONTACTMATRIX, self.maskChance)
         agents.append(newAgent)
         iD += 1
 
     rand.shuffle(agents)
 
     # Take random sample ofa agents that will be infected at the beginning of the simulation
-    for index in np.random.randint(len(agents), size=10):
+    for index in np.random.randint(len(agents), size=initially_infected):
         agents[index].status = "infected"
 
     return agents
 
     def manipulatepop(self):
         for agent in self.agents:
-            manipulateAgent(agent)
+            manipulateAgent(self, agent)
 
-def getPopDistribution(num = 1000):
+def getPopDistribution(num = 1000):#get population distribution based off real data
     oldPopSize = sum(POP)
     newPopSize = num
     newPop = [0,0,0,0]
@@ -114,15 +117,15 @@ def getPopDistribution(num = 1000):
     print(newPop)
     return newPopSize, newPop
 
-def manipulateAgent(agent):
+def manipulateAgent(self, agent): # set manipulation settings for certain agent
     if isinstance(agent, ChildAgent):
-        agent.manipulationValues = CHILDSETTINGS
+        agent.manipulationValues = self.settings[0]
     elif isinstance(agent, YoungAgent):
-        agent.manipulationValues = YOUNGSETTINGS
+        agent.manipulationValues = self.settings[1]
     elif isinstance(agent, AdultAgent):
-        agent.manipulationValues = ADULTSETTINGS
+        agent.manipulationValues = self.settings[2]
     else:
-        agent.manipulationValues = ELDERLYSETTINGS
+        agent.manipulationValues = self.settings[3]
 
     agent.manipulate()
 

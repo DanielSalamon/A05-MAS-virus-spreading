@@ -2,26 +2,26 @@ from model.areas import Home, Other, School, Work, All
 from model.agents.baseAgent import *
 
 
-class Places():
+class SimulationInitialiser(): 
 
     def __init__(self, virusModel):
 
         self.model = virusModel
-        self.workplaces = list()
+        self.workplaces = list() # list of each area in the simulation 
         self.homes = list()
         self.schools = list()
         self.others = list()
         self.all = list()
 
-    def placeAgents(self):
+    def placeAgents(self): # creates new instances of areas if full, adds each agent of the sim to each location with free spot
         agents = self.model.agents
         idNum = 1
 
-        newHome = Home(1)
-        newSchool = School(1)
-        newOther = Other(1)
-        newWork = Work(1)
-        newAll = All(1)
+        newHome = Home()
+        newSchool = School()
+        newOther = Other()
+        newWork = Work()
+        newAll = All()
 
         self.homes.append(newHome)
         self.schools.append(newSchool)
@@ -43,14 +43,14 @@ class Places():
             agent.settings[4] = newOther
             
             if newHome.full:
-                newHome = Home(2)
+                newHome = Home()
                 self.homes.append(newHome)
             if newSchool.full:
-                newSchool = School(2)
+                newSchool = School()
                 self.schools.append(newHome)
             if newOther.full:
-                newOther = Other(2)
+                newOther = Other()
                 self.others.append(newHome)
             if newWork.full:
-                newWork = Work(2)
+                newWork = Work()
                 self.workplaces.append(newHome)

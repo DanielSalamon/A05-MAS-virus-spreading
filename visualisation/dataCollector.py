@@ -117,7 +117,7 @@ class DataCollector:
 			else:
 				old += 1
 
-		f= open("visualisation\\visual_data.txt", "a")
+		f= open("visualisation/visual_data.txt", "a")
 		f.write(str(children)+","+str(young)+","+str(adult)+","+str(old)+","+str(susceptible)+","+str(exposed)+","+str(infected)+","+str(removed)+"\n")
 
 		f.close()

@@ -1,8 +1,12 @@
+import matplotlib
+matplotlib.use("TkAgg")
+from matplotlib import pyplot as plt
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
 import pandas as pd 
 
+# draw plots
 
 def draw_disease_plot(data_frame):
 
@@ -68,7 +72,7 @@ condition_axis = fig.add_subplot(2,1,2)
 ################################################
 
 def animate(i):
-	graph_data = open("visualisation\\visual_data.txt",'r').read()
+	graph_data = open("visualisation/visual_data.txt",'r').read()
 	lines = graph_data.split('\n')
 	children_axis_data = []
 	young_axis_data = []
@@ -102,6 +106,10 @@ def animate(i):
 
 	age_axis.clear()
 	condition_axis.clear()
+	age_axis.set_title('Live graph of Agents')
+	age_axis.set_ylabel('Number of Agents')
+	condition_axis.set_ylabel('Number of Agents')
+	condition_axis.set_xlabel('Day')
 	# young_axis.clear()
 	# adult_axis.clear()
 	# old_axis.clear()
@@ -122,5 +130,6 @@ def animate(i):
 
 
 def live_animation():
+
 	ani = animation.FuncAnimation(fig, animate, interval=1000)
 	plt.show()
