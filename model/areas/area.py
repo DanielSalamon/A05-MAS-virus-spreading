@@ -4,7 +4,8 @@ import random as rand
 
 
 class Area():
-    def __init__(self):
+    def __init__(self, model):
+        self.model = model
         self.capacity = 1 # capacity of agents in one area
         self.memNum = 0 # current number of members
         self.full = False 
@@ -33,6 +34,7 @@ class Area():
             chance = self.infectionChance(agent1,agent2) 
             if (chance > rand.random()):
                 agent1.status = "exposed"
+                self.model.totalExposed += 1
 
         # elif agent1.status == "infected" and agent2.status == "susceptible": 
         #     if (self.attack_rate > rand.random()):

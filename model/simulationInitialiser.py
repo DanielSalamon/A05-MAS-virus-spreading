@@ -17,11 +17,11 @@ class SimulationInitialiser():
         agents = self.model.agents
         idNum = 1
 
-        newHome = Home()
-        newSchool = School()
-        newOther = Other()
-        newWork = Work()
-        newAll = All()
+        newHome = Home(self.model)
+        newSchool = School(self.model)
+        newOther = Other(self.model)
+        newWork = Work(self.model)
+        newAll = All(self.model)
 
         self.homes.append(newHome)
         self.schools.append(newSchool)
@@ -43,14 +43,14 @@ class SimulationInitialiser():
             agent.settings[4] = newOther
             
             if newHome.full:
-                newHome = Home()
+                newHome = Home(self.model)
                 self.homes.append(newHome)
             if newSchool.full:
-                newSchool = School()
+                newSchool = School(self.model)
                 self.schools.append(newHome)
             if newOther.full:
-                newOther = Other()
+                newOther = Other(self.model)
                 self.others.append(newHome)
             if newWork.full:
-                newWork = Work()
+                newWork = Work(self.model)
                 self.workplaces.append(newHome)

@@ -1,10 +1,14 @@
 import pandas as pd
 import numpy as np
 
-
 class DataCollector:
 
 	def __init__(self):
+		self.highestExposed = 0
+		self.highestInfected = 0
+		self.highestDead = 0
+		self.numberOfDeadYesterday = 0
+
 		self.population_data = {"susceptible" : [],
 							 "exposed" : [],
 							 "infected" : [],
@@ -147,6 +151,16 @@ class DataCollector:
 			elif status == "infected":
 				infected += 1
 
+		
+
+		if exposed > self.highestExposed:
+			self.highestExposed = exposed
+		if infected > self.highestInfected:
+			self.highestInfected = infected
+		if (removed - self.numberOfDeadYesterday) > self.highestDead:
+			self.highestDead = (removed - self.numberOfDeadYesterday)
+
+		self.numberOfDeadYesterday = removed
 
 		#updating the disease data
 		self.population_data["susceptible"].append(susceptible)
@@ -214,19 +228,19 @@ class DataCollector:
 		summary = self.simulation_summary()
 		print("------------------SUMMARIES--------------------\n")
 		print("Population summary: \n")
-		print(summary[0])
+		print(summary[0].tail(1))
 		print("-----------------------------------------------")
 		print("Children summary: \n")
-		print(summary[1])
+		print(summary[1].tail(1))
 		print("-----------------------------------------------")
 		print("Young summary: \n")
-		print(summary[2])
+		print(summary[2].tail(1))
 		print("-----------------------------------------------")
 		print("Adults summary: \n")
-		print(summary[3])
+		print(summary[3].tail(1))
 		print("-----------------------------------------------")
 		print("Olds summary: \n")
-		print(summary[4])
+		print(summary[4].tail(1))
 		print("-----------------------------------------------")
 		
 		
@@ -242,6 +256,7 @@ class DataCollector:
 		for age in model.removed_agents:
 			dead_agents[age][0] += 1
 
+
 		data_frame = pd.DataFrame.from_dict(dead_agents)
 		data_frame.columns = ["Children", "Young", "Adults", "Olds"]
 
@@ -249,3 +264,23 @@ class DataCollector:
 		print(data_frame)
 
 		return data_frame
+
+	def totalSummary(self, model, settings):
+		
+		# total number of people died
+		totalDead = round(len(model.removed_agents) / model.popN, 2)
+		# total number of people infected
+		totalInfected = round(model.totalInfected / model.popN, 2)
+		# total number of people exposed
+		totalExposed = round(model.totalExposed / model.popN, 2)
+		# highest number of infected in a day
+		highestDead = self.highestDead
+		# highest number of dead in a day
+		highestExposed = self.highestExposed
+		# highest number of exposed in a day
+		highestInfected = self.highestInfected
+		# total recovered
+		totalRecovered = model.totalRecovered
+
+		with open('data/totalSummary.txt', 'a') as file:
+			file.write(str(settings)+","+str(totalExposed)+","+str(totalInfected)+","+str(totalDead)+","+str(totalRecovered)+","+str(highestExposed)+","+str(highestInfected)+","+str(highestDead)+"\n")

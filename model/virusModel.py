@@ -28,6 +28,9 @@ class VirusModel(Model): # actual simulation
         self.simInit = SimulationInitialiser(self) # initialise agent locations and memberships to locations
         self.simInit.placeAgents()
         self.removed_agents = list() # list of dead agents
+        self.totalInfected = 0
+        self.totalExposed = 0
+        self.totalRecovered = 0
         self.settings = settings
         for agent in self.agents: # initialise the agent meeting plans and add them to step schedule
             self.schedule.add(agent)
@@ -52,6 +55,7 @@ class VirusModel(Model): # actual simulation
             if agent.incubation_counter == 6: # average incubation period = 4-6 days
                 if(agent.transition_to_infected > rand.random()):   # probability of Exposed -> Infected
                     agent.status = "infected"
+                    self.totalInfected += 1
                     agent.incubation_counter = 0
             else: 
                 agent.incubation_counter += 1
@@ -64,6 +68,7 @@ class VirusModel(Model): # actual simulation
                     self.removed_agents.append(agent.ageIndex) # append the age group of dead agent
                 else: 
                     agent.status = "susceptible"
+                    self.totalRecovered += 1
                     agent.incubation_counter = 0
             else:
                 agent.incubation_counter += 1

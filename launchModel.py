@@ -6,114 +6,155 @@ from tkinter import *
 import os
 
 
-DAYS = 50 # desired days the model will run
+DAYS = 2  # desired days the model will run
 
-AGENTS = 1000 # desired agents the model will have
+AGENTS = 1000  # desired agents the model will have
 
-INIT_INFECTED = 10 # number of agents infected at the beggining of the simulation
+INIT_INFECTED = 10  # number of agents infected at the beggining of the simulation
 
-MASKCHANCE = 'all' # proportion of agents wearing a mask {'all', 'most', 'half', 'few', 'none'}
+# proportion of agents wearing a mask {'all', 'most', 'half', 'few', 'none'}
+MASKCHANCE = 'all'
 
-SETTINGS = [False, 'none', 'none', 'none', 'none'] # choose how strict the lockdown is taken into account for each agegroup 
-							   # choose restrictions as follows: {'none','minimal','moderate','severe,'total'}
-							   # index0 = whether school is out or not
-							   # index1 = restrictions for children
-							   # index2 = restrictions for youngadults
-							   # index 3 = restrictions for adults
-							   # index 4 = restrictions for elderly
-
-
-def MainProgram(live_graph = True):
-	settings = constructSettings()
-	maskChance = getMaskChance()
-
-	model = vm.VirusModel(AGENTS, maskChance, INIT_INFECTED, settings)
-	data_collector = dc.DataCollector()
-
-	for day in range(1, DAYS + 2):
-	    print('Day '+ str(day))
-	    model.step()
-	    data_collector.print_overall_stats(model)
-	    if live_graph:
-	    	data_collector.write_to_file(model)
-	    data_collector.collect_daily_data(model)
+# choose how strict the lockdown is taken into account for each agegroup
+SETTINGS = [False, 'none', 'none', 'none', 'none']
+# choose restrictions as follows: {'none','minimal','moderate','severe,'total'}
+# index0 = whether school is out or not
+# index1 = restrictions for children
+# index2 = restrictions for youngadults
+# index 3 = restrictions for adults
+# index 4 = restrictions for elderly
 
 
-	# Summary of the simulation
+def MainProgram(simSettings, live_graph=True, vis=True, table=False, config=None):
+    agents = simSettings[0]
+    maskChance = simSettings[1]
+    infected = simSettings[2]
+    settings = simSettings[3]
+    print(simSettings)
 
-	data_collector.print_summary()
-	df = data_collector.total_dead_agents(model)
+    model = vm.VirusModel(agents, maskChance, infected, settings)
+    data_collector = dc.DataCollector()
 
-	# Visualisation
+    for day in range(1, DAYS + 2):
+        print('Day ' + str(day))
+        model.step()
+        data_collector.print_overall_stats(model)
+        if live_graph:
+            data_collector.write_to_file(model)
+        data_collector.collect_daily_data(model)
 
-	summary = data_collector.simulation_summary()
-	perform_visualisation(summary, df)
+    if vis:
+        # Summary of the simulation
+        data_collector.print_summary()
+        df = data_collector.total_dead_agents(model)
 
-def constructSettings():
-	settings = SETTINGS
-	newSettings = list()
-	for agentType in range(1,5):
-		amount = getValue(settings[agentType])
-		subsetting = [settings[0], amount, amount, amount]
-		newSettings.append(subsetting)
-	print(newSettings)
-	return newSettings
+        # Visualisation
+        summary = data_collector.simulation_summary()
+        perform_visualisation(summary, df)
+    if table:
+        settings = (f'Mask Chance: {config[0]}, School Out: {config[1]}, Child Lockdown: {config[2]}, Young Lockdown: {config[3]}, Adult Lockdown: {config[4]}, Elderly Lockdown: {config[5]}')
+        data_collector.totalSummary(model, settings)
+
+
+def constructSettings(settings):
+    newSettings = list()
+    for agentType in range(1, 5):
+        amount = getValue(settings[agentType])
+        subsetting = [settings[0], amount, amount, amount]
+        newSettings.append(subsetting)
+    return newSettings
+
 
 def getValue(severity):
-	sev = severity.lower()
-	noMeasure = 1
-	minimal = 0.8
-	moderate = 0.5
-	severe = 0.2
-	total = 0
-	if sev == 'minimal':
-		return minimal
-	elif sev == 'moderate':
-		return moderate
-	elif sev == 'severe':
-		return severe
-	elif sev == 'total':
-		return total
-	else:
-		return noMeasure
-
-def getMaskChance():
-	chance = MASKCHANCE.lower()
-	none = 0
-	few = 0.2
-	half = 0.5
-	most = 0.8
-	all = 1
-	if chance == 'few':
-		return few
-	elif chance == 'half':
-		return half
-	elif chance == 'most':
-		return most
-	elif chance == 'all':
-		return all
-	else:
-		return none
+    sev = severity.lower()
+    noMeasure = 1
+    minimal = 0.8
+    moderate = 0.5
+    severe = 0.2
+    total = 0
+    if sev == 'minimal':
+        return minimal
+    elif sev == 'moderate':
+        return moderate
+    elif sev == 'severe':
+        return severe
+    elif sev == 'total':
+        return total
+    else:
+        return noMeasure
 
 
-def begin():
-	live_graph_status = True
+def getMaskChance(maskChance):
+    chance = maskChance.lower()
+    none = 0
+    few = 0.2
+    half = 0.5
+    most = 0.8
+    all = 1
+    if chance == 'few':
+        return few
+    elif chance == 'half':
+        return half
+    elif chance == 'most':
+        return most
+    elif chance == 'all':
+        return all
+    else:
+        return none
 
-	if live_graph_status :
-	    f = open("visualisation/visual_data.txt", "w")
-	    f.close()
 
-	    p = Process(target=live_animation,args = [DAYS])
-	    p.start()
-	    MainProgram(live_graph=live_graph_status)
-	    p.join()
+def runSingle():
 
-	    os.remove("visualisation/visual_data.txt")
+    settings = constructSettings(SETTINGS)
+    maskChance = getMaskChance(MASKCHANCE)
+    agents = AGENTS
+    infected = INIT_INFECTED
+    simSettings = [agents, maskChance, infected, settings]
+    live_graph_status = True
 
-	else:			
-		MainProgram(live_graph=False)
+    if live_graph_status:
+        f = open("visualisation/visual_data.txt", "w")
+        f.close()
+
+        p = Process(target=live_animation, args=[DAYS])
+        p.start()
+        MainProgram(simSettings, live_graph=live_graph_status)
+        p.join()
+
+        os.remove("visualisation/visual_data.txt")
+
+    else:
+        MainProgram(simSettings, live_graph=False)
+
+
+def runComplete():
+    # os.remove("data/totalSummary.txt")
+	#mask = ['all', 'most', 'half', 'few', 'none']
+	#lockdown = ['none', 'minimal', 'moderate', 'severe', 'total']
+	#agent = [1, 2, 3, 4]
+    school = [True, False]
+    mask = ['all']
+    lockdown = ['none']
+    agent = [1]
+    simSets = [False, 'none', 'none', 'none', 'none']
+
+    for s in school:
+        for m in mask:
+            for a in agent:
+                for l in lockdown:
+                    config = [m,s,simSets[1],simSets[2],simSets[3],simSets[4]]
+                    simSets[0] = s
+                    simSets[a] = l
+                    settings = constructSettings(simSets)
+                    maskChance = getMaskChance(m)
+                    agents = AGENTS
+                    infected = INIT_INFECTED
+                    simSettings = [agents, maskChance, infected, settings]
+                    MainProgram(simSettings, live_graph=False, vis=False, table=True,config=config)
+
+
 
 if __name__ == '__main__':
-	
-	begin()
 
+    #runSingle()
+    runComplete()
