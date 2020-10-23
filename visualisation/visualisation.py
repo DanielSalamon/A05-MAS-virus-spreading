@@ -72,7 +72,7 @@ condition_axis = fig.add_subplot(2,1,2)
 ################################################
 
 def animate(i):
-	graph_data = open("visualisation\\visual_data.txt",'r').read()
+	graph_data = open("visualisation/visual_data.txt",'r').read()
 	lines = graph_data.split('\n')
 	children_axis_data = []
 	young_axis_data = []

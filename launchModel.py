@@ -46,10 +46,11 @@ def MainProgram(live_graph = True):
 def constructSettings():
 	settings = SETTINGS
 	newSettings = list()
-	for agentType in range(0,3):
+	for agentType in range(1,5):
 		amount = getValue(settings[agentType])
 		subsetting = [settings[0], amount, amount, amount]
 		newSettings.append(subsetting)
+	print(newSettings)
 	return newSettings
 
 def getValue(severity):

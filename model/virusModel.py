@@ -31,7 +31,7 @@ class VirusModel(Model): # actual simulation
         for agent in self.agents: # initialise the agent meeting plans and add them to step schedule
             self.schedule.add(agent)
             agent.findMeetingNum()
-            manipulateAgent(agent)#change social distancing behaviours if necessary
+            manipulateAgent(self, agent) # change social distancing behaviours if necessary
 
     def getAgents(self):
         return self.agents
@@ -118,13 +118,13 @@ def getPopDistribution(num = 1000):#get population distribution based off real d
 
 def manipulateAgent(self, agent): # set manipulation settings for certain agent
     if isinstance(agent, ChildAgent):
-        agent.manipulationValues = self.settngs[0]
+        agent.manipulationValues = self.settings[0]
     elif isinstance(agent, YoungAgent):
-        agent.manipulationValues = self.settngs[1]
+        agent.manipulationValues = self.settings[1]
     elif isinstance(agent, AdultAgent):
-        agent.manipulationValues = self.settngs[2]
+        agent.manipulationValues = self.settings[2]
     else:
-        agent.manipulationValues = self.settngs[3]
+        agent.manipulationValues = self.settings[3]
 
     agent.manipulate()
 
