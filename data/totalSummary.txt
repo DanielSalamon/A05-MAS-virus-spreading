@@ -1,0 +1,2 @@
+Mask Chance: all, School Out: True, Child Lockdown: none, Young Lockdown: none, Adult Lockdown: none, Elderly Lockdown: none,0.01,0.0,0.0,0,14,10,0
+Mask Chance: all, School Out: False, Child Lockdown: none, Young Lockdown: none, Adult Lockdown: none, Elderly Lockdown: none,0.02,0.0,0.0,0,21,10,0
