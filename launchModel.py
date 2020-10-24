@@ -132,20 +132,20 @@ def runComplete():
 	#mask = ['all', 'most', 'half', 'few', 'none']
 	#lockdown = ['none', 'minimal', 'moderate', 'severe', 'total']
 	#agent = [1, 2, 3, 4]
-    school = [True, False]
-    mask = ['all']
-    lockdown = ['none']
-    agent = [1]
-    simSets = [False, 'none', 'none', 'none', 'none']
+    #school = [True, False]
+    #simSets = [False, 'none', 'none', 'none', 'none']
+    school = [True]
+    mask = ['all', 'most', 'half', 'few', 'none']
+    lockdown = ['none', 'minimal', 'moderate', 'severe']
+    simSets = ['none', 'none',] #younger older
+
 
     for s in school:
         for m in mask:
-            for a in agent:
-                for l in lockdown:
-                    config = [m,s,simSets[1],simSets[2],simSets[3],simSets[4]]
-                    simSets[0] = s
-                    simSets[a] = l
-                    settings = constructSettings(simSets)
+            for young in lockdown:
+                for old in lockdown:
+                    config = [m,s,young,young,young,old]
+                    settings = constructSettings([s,young, young, young, old])
                     maskChance = getMaskChance(m)
                     agents = AGENTS
                     infected = INIT_INFECTED
