@@ -311,11 +311,11 @@ class DataCollector:
 	def totalSummary(self, model, settings):
 		
 		# total number of people died
-		totalDead = round(len(model.removed_agents) / model.popN, 2)
+		totalDead = len(model.removed_agents)
 		# total number of people infected
-		totalInfected = round(model.totalInfected / model.popN, 2)
+		totalInfected = model.totalInfected
 		# total number of people exposed
-		totalExposed = round(model.totalExposed / model.popN, 2)
+		totalExposed = model.totalExposed
 		# highest number of infected in a day
 		highestDead = self.highestDead
 		# highest number of dead in a day

@@ -67,7 +67,9 @@ class VirusModel(Model): # actual simulation
                     agent.die()
                     self.removed_agents.append(agent.ageIndex) # append the age group of dead agent
                 else: 
-                    agent.status = "recovered"
+
+                    agent.status = "recovered" #immune
+
                     self.totalRecovered += 1
                     agent.incubation_counter = 0
             else:

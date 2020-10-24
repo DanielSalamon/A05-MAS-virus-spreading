@@ -6,7 +6,9 @@ from tkinter import *
 import os
 
 
-DAYS = 100 # desired days the model will run
+
+DAYS = 100  # desired days the model will run
+
 
 AGENTS = 1000  # desired agents the model will have
 
@@ -53,7 +55,7 @@ def MainProgram(simSettings, live_graph=True, vis=True, table=False, config=None
         summary = data_collector.simulation_summary()
         perform_visualisation(summary, dead_agents, recovered_agents)
     if table:
-        settings = (f'Mask Chance: {config[0]}, School Out: {config[1]}, Child Lockdown: {config[2]}, Young Lockdown: {config[3]}, Adult Lockdown: {config[4]}, Elderly Lockdown: {config[5]}')
+        settings = (f'{config[0]}, {config[1]}, {config[2]}, {config[3]}, {config[4]}, {config[5]}')
         data_collector.totalSummary(model, settings)
 
 
@@ -129,24 +131,26 @@ def runSingle():
 
 
 def runComplete():
-    # os.remove("data/totalSummary.txt")
+    os.remove("data/totalSummary.txt")
 	#mask = ['all', 'most', 'half', 'few', 'none']
 	#lockdown = ['none', 'minimal', 'moderate', 'severe', 'total']
 	#agent = [1, 2, 3, 4]
+
+    #school = [True, False]
+    #simSets = [False, 'none', 'none', 'none', 'none']
     school = [True]
-    mask = ['half']
-    lockdown = ['none']
-    agent = [1]
-    simSets = [False, 'none', 'none', 'none', 'none']
+    mask = ['all', 'most', 'half', 'few', 'none']
+    lockdown = ['none', 'minimal', 'moderate', 'severe']
+    simSets = ['none', 'none',] #younger older
+
+
 
     for s in school:
         for m in mask:
-            for a in agent:
-                for l in lockdown:
-                    config = [m,s,simSets[1],simSets[2],simSets[3],simSets[4]]
-                    simSets[0] = s
-                    simSets[a] = l
-                    settings = constructSettings(simSets)
+            for young in lockdown:
+                for old in lockdown:
+                    config = [m,s,young,young,young,old]
+                    settings = constructSettings([s,young, young, young, old])
                     maskChance = getMaskChance(m)
                     agents = AGENTS
                     infected = INIT_INFECTED
