@@ -10,14 +10,14 @@ import pandas as pd
 
 def draw_disease_plot(data_frame):
 
-	styles = ['green','orange','red', 'black']
-	linewidths = [1, 1, 1, 1]
+	styles = ['green','orange','red', 'black', 'lightblue']
+	linewidths = [1, 1, 1, 1, 1]
 	fig, ax = plt.subplots()
 	for col, style, lw in zip(data_frame.columns, styles, linewidths):
 	    data_frame[col].plot(style=style, lw=lw, ax=ax)
 	    plt.xlabel("Day")
 	    plt.ylabel("Number of agents")
-	    plt.legend(['susceptible', 'exposed', 'infected', 'removed'])
+	    plt.legend(['susceptible', 'exposed', 'infected', 'removed', 'recovered'])
 	    plt.title("Population statistics over whole simulation")
 
 
@@ -29,30 +29,30 @@ def draw_disease_plot(data_frame):
 def draw_plot_by_group_age(data_frame, age_group):
 
 
-	styles = ['green','orange','red', 'black']
-	linewidths = [1, 1, 1, 1]
+	styles = ['green','orange','red', 'black', 'lightblue']
+	linewidths = [1, 1, 1, 1, 1]
 	fig, ax = plt.subplots()
 	for col, style, lw in zip(data_frame.columns, styles, linewidths):
 	    data_frame[col].plot(style=style, lw=lw, ax=ax)
 	    plt.xlabel("Day")
 	    plt.ylabel("Number of agents")
-	    plt.legend(['susceptible', 'exposed', 'infected', 'removed'])
+	    plt.legend(['susceptible', 'exposed', 'infected', 'removed', 'recovered'])
 	    plt.title("Disease statistics for age group: " + age_group)
 
-	plt.savefig("visualisation/plots/" + age_group)
+	plt.savefig("visualisation/plots/" + age_group + ".png")
 	plt.close(fig)
 
 
 
-def draw_plots_by_age_groups(data_frames, df):
+def draw_plots_by_age_groups(data_frames, dead_agents, recovered_agents):
 
-	img_labels = ["Child", "Young", "Adult", "Old", "Overall", "Deaths"]
+	img_labels = ["Overall", "Child", "Young", "Adult", "Old", "Deaths"]
 
-	for i in range(1, 5):
+	for i in range(1,5):
 		draw_plot_by_group_age(data_frames[i], img_labels[i])
 
 	draw_disease_plot(data_frames[0])
-	visualize_dead_agents(df)
+	visualize_dead_and_recovered_agents(dead_agents, recovered_agents)
 	
 	fig=plt.figure(figsize=(15, 10))
 	columns = 2
@@ -64,17 +64,51 @@ def draw_plots_by_age_groups(data_frames, df):
 	plt.show()
 
 
-def visualize_dead_agents(data_frame):
+def visualize_dead_and_recovered_agents(dead, recovered):
 
-	data_frame.plot(kind="bar")
-	plt.ylabel("Number of dead agents")
-	plt.title("Dead agents per age group")
+
+
+	labels = ['Children', 'Young', 'Adults', 'Olds']
+	deaths = [dead[0][0], dead[1][0], dead[2][0], dead[3][0]]
+	rec = [recovered[0][0], recovered[1][0], recovered[2][0], recovered[3][0]]
+
+	x = np.arange(len(labels))  # the label locations
+	width = 0.35  # the width of the bars
+
+	fig, ax = plt.subplots()
+	rects1 = ax.bar(x - width/2, deaths, width, label='Died')
+	rects2 = ax.bar(x + width/2, rec, width, label='Recovered')
+
+	# Add some text for labels, title and custom x-axis tick labels, etc.
+	ax.set_ylabel('Numer of agents')
+	ax.set_title('Dead and recovered agents by age group')
+	ax.set_xticks(x)
+	ax.set_xticklabels(labels)
+	ax.legend()
+
+
+	def autolabel(rects):
+	    """Attach a text label above each bar in *rects*, displaying its height."""
+	    for rect in rects:
+	        height = rect.get_height()
+	        ax.annotate('{}'.format(height),
+	                    xy=(rect.get_x() + rect.get_width() / 2, height),
+	                    xytext=(0, 3),  # 3 points vertical offset
+	                    textcoords="offset points",
+	                    ha='center', va='bottom')
+
+
+	autolabel(rects1)
+	autolabel(rects2)
+
+	fig.tight_layout()
+
 	plt.savefig("visualisation/plots/Deaths.png")
-	plt.close()
+	plt.close(fig)
 
-def perform_visualisation(summary, df):
+def perform_visualisation(summary, dead_agents, recovered_agents):
 	#draw_disease_plot(summary[0])
-	draw_plots_by_age_groups(summary, df)
+	draw_plots_by_age_groups(summary, dead_agents, recovered_agents)
 	#visualize_dead_agents(df)
 
 fig = plt.figure()
@@ -98,6 +132,7 @@ def animate(i):
 	exposed_axis_data = []
 	infected_axis_data = []
 	removed_axis_data = []
+	recovered_axis_data = []
 	###################################
 
 	# print(lines)
@@ -118,6 +153,7 @@ def animate(i):
 			exposed_axis_data.append(int(line[5]))
 			infected_axis_data.append(int(line[6]))
 			removed_axis_data.append(int(line[7]))
+			recovered_axis_data.append(int(line[8]))
 
 	age_axis.clear()
 	condition_axis.clear()
@@ -143,6 +179,7 @@ def animate(i):
 	condition_axis.plot(exposed_axis_data,label='exposed')
 	condition_axis.plot(infected_axis_data,label='infected')
 	condition_axis.plot(removed_axis_data,label='removed')
+	condition_axis.plot(recovered_axis_data,label='recovered')
 	condition_axis.legend(loc='upper left',prop={'size':6})
 
 
