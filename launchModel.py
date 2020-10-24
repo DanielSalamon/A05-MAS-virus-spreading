@@ -6,7 +6,7 @@ from tkinter import *
 import os
 
 
-DAYS = 2  # desired days the model will run
+DAYS = 100  # desired days the model will run
 
 AGENTS = 1000  # desired agents the model will have
 
