@@ -52,7 +52,7 @@ def MainProgram(simSettings, live_graph=True, vis=True, table=False, config=None
         summary = data_collector.simulation_summary()
         perform_visualisation(summary, df)
     if table:
-        settings = (f'Mask Chance: {config[0]}, School Out: {config[1]}, Child Lockdown: {config[2]}, Young Lockdown: {config[3]}, Adult Lockdown: {config[4]}, Elderly Lockdown: {config[5]}')
+        settings = (f'{config[0]}, {config[1]}, {config[2]}, {config[3]}, {config[4]}, {config[5]}')
         data_collector.totalSummary(model, settings)
 
 
