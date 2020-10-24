@@ -128,7 +128,7 @@ def runSingle():
 
 
 def runComplete():
-    # os.remove("data/totalSummary.txt")
+    os.remove("data/totalSummary.txt")
 	#mask = ['all', 'most', 'half', 'few', 'none']
 	#lockdown = ['none', 'minimal', 'moderate', 'severe', 'total']
 	#agent = [1, 2, 3, 4]
