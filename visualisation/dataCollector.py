@@ -12,29 +12,34 @@ class DataCollector:
 		self.population_data = {"susceptible" : [],
 							 "exposed" : [],
 							 "infected" : [],
-							 "removed" : []} # we will be collecting data over time of simulation
+							 "removed" : [],
+							 "recovered" : []} # we will be collecting data over time of simulation
 
 
 		# for colleting data of each age group
 		self.children_data = {"susceptible" : [],
 							 "exposed" : [],
 							 "infected" : [],
-							 "removed" : []}
+							 "removed" : [],
+							 "recovered" : []}
 
 		self.young_data = {"susceptible" : [],
 							 "exposed" : [],
 							 "infected" : [],
-							 "removed" : []}
+							 "removed" : [],
+							 "recovered" : []}
 
 		self.adult_data = {"susceptible" : [],
 							 "exposed" : [],
 							 "infected" : [],
-							 "removed" : []}
+							 "removed" : [],
+							 "recovered" : []}
 
 		self.old_data = {"susceptible" : [],
 							 "exposed" : [],
 							 "infected" : [],
-							 "removed" : []}
+							 "removed" : [],
+							 "recovered" : []}
 
 
 	def print_overall_stats(self, model):
@@ -50,6 +55,7 @@ class DataCollector:
 		exposed = 0
 		infected = 0
 		removed = len(model.removed_agents)
+		recovered = 0
 
 		for agent in agents_in_simulation:
 
@@ -62,6 +68,8 @@ class DataCollector:
 				exposed += 1
 			elif status == "infected":
 				infected += 1
+			elif status == "recovered":
+				recovered += 1
 
 
 			if age_group == 0:
@@ -83,6 +91,7 @@ class DataCollector:
 		print("exposed: " + str(exposed))
 		print("infected: " + str(infected))
 		print("removed: " + str(removed))
+		print("recovered: " + str(recovered))
 		print("**********************************")
 
 
@@ -98,6 +107,7 @@ class DataCollector:
 		exposed = 0
 		infected = 0
 		removed = len(model.removed_agents)
+		recovered = 0
 
 		for agent in agents_in_simulation:
 
@@ -110,6 +120,8 @@ class DataCollector:
 				exposed += 1
 			elif status == "infected":
 				infected += 1
+			elif status == "recovered":
+				recovered += 1
 
 
 			if age_group == 0:
@@ -122,7 +134,7 @@ class DataCollector:
 				old += 1
 
 		f= open("visualisation/visual_data.txt", "a")
-		f.write(str(children)+","+str(young)+","+str(adult)+","+str(old)+","+str(susceptible)+","+str(exposed)+","+str(infected)+","+str(removed)+"\n")
+		f.write(str(children)+","+str(young)+","+str(adult)+","+str(old)+","+str(susceptible)+","+str(exposed)+","+str(infected)+","+str(removed)+","+str(recovered)+"\n")
 
 		f.close()
 
@@ -138,6 +150,7 @@ class DataCollector:
 		exposed = 0
 		infected = 0
 		removed = len(model.removed_agents)
+		recovered = 0
 
 		for agent in agents_in_simulation:
 
@@ -150,6 +163,8 @@ class DataCollector:
 				exposed += 1
 			elif status == "infected":
 				infected += 1
+			elif status == "recovered":
+				recovered += 1
 
 		
 
@@ -167,6 +182,7 @@ class DataCollector:
 		self.population_data["exposed"].append(exposed)
 		self.population_data["infected"].append(infected)
 		self.population_data["removed"].append(removed)
+		self.population_data["recovered"].append(recovered)
 		
 
 	def update_dict(self, age_groups_stats, dict_to_update, age_group): # helper function
@@ -176,13 +192,14 @@ class DataCollector:
 		dict_to_update["exposed"].append(age_groups_stats[age_group][1])
 		dict_to_update["infected"].append(age_groups_stats[age_group][2])
 		dict_to_update["removed"].append(age_groups_stats[age_group][3])
+		dict_to_update["recovered"].append(age_groups_stats[age_group][4])
 
 	def collect_disease_stats_by_age_group(self, model):
 
-		age_groups_stats = {0 : [0,0,0,0], # children : suceptible, exposed, infected, removed
-							1 : [0,0,0,0], # young 
-							2 : [0,0,0,0], # adults
-							3 : [0,0,0,0]} # old
+		age_groups_stats = {0 : [0,0,0,0,0], # children : suceptible, exposed, infected, removed, recovered
+							1 : [0,0,0,0,0], # young 
+							2 : [0,0,0,0,0], # adults
+							3 : [0,0,0,0,0]} # old
 
 		for agent in model.agents:
 
@@ -195,10 +212,12 @@ class DataCollector:
 				age_groups_stats[agent_age][1] += 1
 			elif status == "infected":
 				age_groups_stats[agent_age][2] += 1
+			elif status == "recovered":
+				age_groups_stats[agent_age][4] += 1
 
 
-		for age in model.removed_agents: # we keep only ages of dead agents in model.remoed_agents
-			age_groups_stats[age][3] +=1
+		for age in model.removed_agents: # we keep only ages of dead agents in model.removed_agents
+			age_groups_stats[age][3] += 1
 			
 
 
@@ -263,7 +282,31 @@ class DataCollector:
 		print("Total dead agents: \n")
 		print(data_frame)
 
-		return data_frame
+		return dead_agents
+
+	def total_recovered_agents(self, model):
+
+		recovered_agents = {0 : [0],
+					   		1 : [0],
+					  		2 : [0],
+					   		3 : [0]}
+
+		for agent in model.agents:
+
+			status = agent.status
+			age_group = agent.ageIndex
+
+			if status == "recovered":
+				recovered_agents[age_group][0] += 1
+				
+
+		data_frame = pd.DataFrame.from_dict(recovered_agents)
+		data_frame.columns = ["Children", "Young", "Adults", "Olds"]
+
+		print("Total recovered agents: \n")
+		print(data_frame)
+
+		return recovered_agents
 
 	def totalSummary(self, model, settings):
 		

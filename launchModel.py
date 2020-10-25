@@ -6,14 +6,16 @@ from tkinter import *
 import os
 
 
+
 DAYS = 100  # desired days the model will run
+
 
 AGENTS = 1000  # desired agents the model will have
 
 INIT_INFECTED = 10  # number of agents infected at the beggining of the simulation
 
 # proportion of agents wearing a mask {'all', 'most', 'half', 'few', 'none'}
-MASKCHANCE = 'all'
+MASKCHANCE = 'none'
 
 # choose how strict the lockdown is taken into account for each agegroup
 SETTINGS = [False, 'none', 'none', 'none', 'none']
@@ -46,11 +48,12 @@ def MainProgram(simSettings, live_graph=True, vis=True, table=False, config=None
     if vis:
         # Summary of the simulation
         data_collector.print_summary()
-        df = data_collector.total_dead_agents(model)
+        dead_agents = data_collector.total_dead_agents(model)
+        recovered_agents = data_collector.total_recovered_agents(model)
 
         # Visualisation
         summary = data_collector.simulation_summary()
-        perform_visualisation(summary, df)
+        perform_visualisation(summary, dead_agents, recovered_agents)
     if table:
         settings = (f'{config[0]}, {config[1]}, {config[2]}, {config[3]}, {config[4]}, {config[5]}')
         data_collector.totalSummary(model, settings)
@@ -132,12 +135,14 @@ def runComplete():
 	#mask = ['all', 'most', 'half', 'few', 'none']
 	#lockdown = ['none', 'minimal', 'moderate', 'severe', 'total']
 	#agent = [1, 2, 3, 4]
+
     #school = [True, False]
     #simSets = [False, 'none', 'none', 'none', 'none']
     school = [False]
     mask = ['few']
     lockdown = ['none', 'minimal', 'moderate', 'severe']
     simSets = ['none', 'none',] #younger older
+
 
 
     for s in school:
