@@ -128,14 +128,14 @@ def runSingle():
 
 
 def runComplete():
-    os.remove("data/totalSummary.txt")
+    #os.remove("data/totalSummary.txt")
 	#mask = ['all', 'most', 'half', 'few', 'none']
 	#lockdown = ['none', 'minimal', 'moderate', 'severe', 'total']
 	#agent = [1, 2, 3, 4]
     #school = [True, False]
     #simSets = [False, 'none', 'none', 'none', 'none']
-    school = [True]
-    mask = ['all', 'most', 'half', 'few', 'none']
+    school = [False]
+    mask = ['few']
     lockdown = ['none', 'minimal', 'moderate', 'severe']
     simSets = ['none', 'none',] #younger older
 
