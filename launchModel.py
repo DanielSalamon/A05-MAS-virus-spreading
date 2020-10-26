@@ -139,7 +139,7 @@ def runComplete():
     #school = [True, False]
     #simSets = [False, 'none', 'none', 'none', 'none']
     school = [False]
-    mask = ['few']
+    mask = ['all']
     lockdown = ['none', 'minimal', 'moderate', 'severe']
     simSets = ['none', 'none',] #younger older
 
@@ -161,5 +161,5 @@ def runComplete():
 
 if __name__ == '__main__':
 
-    runSingle()
-    #runComplete()
+    #runSingle()
+    runComplete()
