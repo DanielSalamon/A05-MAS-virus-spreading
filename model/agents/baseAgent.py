@@ -9,7 +9,7 @@ class BaseAgent(Agent):  # Basic agent
     def __init__(self, unique_id, model, contactMatrix,maskChance):
         super().__init__(unique_id, model)
         # 4 possible states, based on paper: Susceptible, Exposed, Infected, Remove
-        self.status = ""
+        self.status = "susceptible"
         self.contactMatrix = contactMatrix
         self.chanceOfChange = 0
         self.transition_to_infected = 1 - np.exp(-1/6) # from paper, average incubation period: 4-6 days

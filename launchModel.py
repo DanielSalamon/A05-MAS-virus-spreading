@@ -7,15 +7,15 @@ import os
 
 
 
-DAYS = 100  # desired days the model will run
+DAYS = 50  # desired days the model will run
 
 
-AGENTS = 1000  # desired agents the model will have
+AGENTS = 1500  # desired agents the model will have
 
 INIT_INFECTED = 10  # number of agents infected at the beggining of the simulation
 
 # proportion of agents wearing a mask {'all', 'most', 'half', 'few', 'none'}
-MASKCHANCE = 'none'
+MASKCHANCE = 'all'
 
 # choose how strict the lockdown is taken into account for each agegroup
 SETTINGS = [False, 'none', 'none', 'none', 'none']
@@ -161,5 +161,5 @@ def runComplete():
 
 if __name__ == '__main__':
 
-    #runSingle()
-    runComplete()
+    runSingle()
+    #runComplete()

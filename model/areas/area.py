@@ -18,7 +18,7 @@ class Area():
         self.elderly = list()
         self.members = [self.children, self.youngAdults, self.adults, self.elderly]
 
-        self.attack_rate = 0.1 # estimation from paper "Estimation of Individual Probabilities of COVID-19 
+        self.attack_rate = 0.5 # estimation from paper "Estimation of Individual Probabilities of COVID-19 
         # Infection, Hospitalization, and Death From A County-level Contact of Unknown infection Status"
 
 
@@ -41,16 +41,16 @@ class Area():
         #         agent2.status = "exposed"
 
     def infectionChance(self, agent1, agent2):
-        maskReceiveProb = 0.5 #TODO find the mask transmssion and reception probs
-        maskTransmitProb = 0.5
+        maskReceiveProb = 0.2 #TODO find the mask transmssion and reception probs
+        maskTransmitProb = 0.2
         chance = self.attack_rate
 
         if agent1.mask and agent2.mask:
-            chance = chance * maskTransmitProb * maskTransmitProb
+            chance = chance * (1-(maskTransmitProb + maskTransmitProb))
         elif agent1.mask:
-            chance = chance * maskReceiveProb
+            chance = chance * (1-maskReceiveProb)
         elif agent2.mask:
-            chance = chance * maskTransmitProb
+            chance = chance * (1-maskTransmitProb)
         
         return chance
 
