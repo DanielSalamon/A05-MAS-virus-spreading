@@ -37,7 +37,7 @@ def MainProgram(simSettings, live_graph=True, vis=True, table=False, config=None
     model = vm.VirusModel(agents, maskChance, infected, settings)
     data_collector = dc.DataCollector()
 
-    for day in range(1, DAYS + 2):
+    for day in range(1, DAYS + 1):
         print('Day ' + str(day))
         model.step()
         data_collector.print_overall_stats(model)
