@@ -18,7 +18,7 @@ INIT_INFECTED = 15  # number of agents infected at the beggining of the simulati
 MASKCHANCE = 'all'
 
 # choose how strict the lockdown is taken into account for each agegroup
-SETTINGS = [False, 'none', 'none', 'none', 'none']
+SETTINGS = [False, 'severe', 'severe', 'severe', 'severe']
 # choose restrictions as follows: {'none','minimal','moderate','severe,'total'}
 # index0 = whether school is out or not
 # index1 = restrictions for children
