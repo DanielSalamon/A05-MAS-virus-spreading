@@ -12,10 +12,10 @@ DAYS = 100  # desired days the model will run
 
 AGENTS = 1500  # desired agents the model will have
 
-INIT_INFECTED = 10  # number of agents infected at the beggining of the simulation
+INIT_INFECTED = 15  # number of agents infected at the beggining of the simulation
 
 # proportion of agents wearing a mask {'all', 'most', 'half', 'few', 'none'}
-MASKCHANCE = 'none'
+MASKCHANCE = 'all'
 
 # choose how strict the lockdown is taken into account for each agegroup
 SETTINGS = [False, 'none', 'none', 'none', 'none']
@@ -139,27 +139,27 @@ def runComplete():
     #school = [True, False]
     #simSets = [False, 'none', 'none', 'none', 'none']
     school = [False]
-    mask = ['all']
+    mask = ['few']
     lockdown = ['none', 'minimal', 'moderate', 'severe']
     simSets = ['none', 'none',] #younger older
 
 
-
-    for s in school:
-        for m in mask:
-            for young in lockdown:
-                for old in lockdown:
-                    config = [m,s,young,young,young,old]
-                    settings = constructSettings([s,young, young, young, old])
-                    maskChance = getMaskChance(m)
-                    agents = AGENTS
-                    infected = INIT_INFECTED
-                    simSettings = [agents, maskChance, infected, settings]
-                    MainProgram(simSettings, live_graph=False, vis=False, table=True,config=config)
+    for i in range(5):
+	    for s in school:
+	        for m in mask:
+	            for young in lockdown:
+	                for old in lockdown:
+	                    config = [m,s,young,young,young,old]
+	                    settings = constructSettings([s,young, young, young, old])
+	                    maskChance = getMaskChance(m)
+	                    agents = AGENTS
+	                    infected = INIT_INFECTED
+	                    simSettings = [agents, maskChance, infected, settings]
+	                    MainProgram(simSettings, live_graph=False, vis=False, table=True,config=config)
 
 
 
 if __name__ == '__main__':
 
-    #runSingle()
-    runComplete()
+    runSingle()
+    #runComplete()
