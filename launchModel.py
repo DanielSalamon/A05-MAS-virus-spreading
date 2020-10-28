@@ -15,10 +15,10 @@ AGENTS = 1500  # desired agents the model will have
 INIT_INFECTED = 15  # number of agents infected at the beggining of the simulation
 
 # proportion of agents wearing a mask {'all', 'most', 'half', 'few', 'none'}
-MASKCHANCE = 'all'
+MASKCHANCE = 'half'
 
 # choose how strict the lockdown is taken into account for each agegroup
-SETTINGS = [False, 'severe', 'severe', 'severe', 'severe']
+SETTINGS = [False, 'none', 'none', 'none', 'none']
 # choose restrictions as follows: {'none','minimal','moderate','severe,'total'}
 # index0 = whether school is out or not
 # index1 = restrictions for children
