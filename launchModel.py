@@ -7,7 +7,7 @@ import os
 
 
 
-DAYS = 100  # desired days the model will run
+DAYS = 1  # desired days the model will run
 
 
 AGENTS = 1500  # desired agents the model will have
@@ -18,7 +18,7 @@ INIT_INFECTED = 15  # number of agents infected at the beggining of the simulati
 MASKCHANCE = 'half'
 
 # choose how strict the lockdown is taken into account for each agegroup
-SETTINGS = [False, 'none', 'none', 'none', 'none']
+SETTINGS = [False, 'severe', 'none', 'none', 'none']
 # choose restrictions as follows: {'none','minimal','moderate','severe,'total'}
 # index0 = whether school is out or not
 # index1 = restrictions for children
