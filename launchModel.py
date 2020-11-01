@@ -8,7 +8,7 @@ import readchar
 
 
 
-DAYS = 1  # desired days the model will run
+DAYS = 100  # desired days the model will run
 
 
 AGENTS = 1500  # desired agents the model will have

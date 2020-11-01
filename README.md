@@ -72,9 +72,9 @@ Those settings can be easily changed by pressing "2" button. The interface will 
 
 At the end of simulation, program prints statistics of each age group as well as of the whole population of agents. Moreover, it saves graphs in the "visualisation/plots/" directory, which might be useful for the further analysis. Example output plots from the baseline experiment (without any restrictions) are presented below:
 
-<img src="visualisation/plots/noMasks_none_none/Overall.png" width="450" > <img src="visualisation/plots/noMasks_none_none/Child.png" width="450" >
-<img src="visualisation/plots/noMasks_none_none/Young.png" width="450" > <img src="visualisation/plots/noMasks_none_none/Adult.png" width="450" >
-<img src="visualisation/plots/noMasks_none_none/Old.png" width="450" > <img src="visualisation/plots/noMasks_none_none/Deaths.png" width="420" >
+<img src="visualisation/plots/noMasks_none_none/Overall.png" width="400" > <img src="visualisation/plots/noMasks_none_none/Child.png" width="400" >
+<img src="visualisation/plots/noMasks_none_none/Young.png" width="400" > <img src="visualisation/plots/noMasks_none_none/Adult.png" width="400" >
+<img src="visualisation/plots/noMasks_none_none/Old.png" width="400" > <img src="visualisation/plots/noMasks_none_none/Deaths.png" width="380" >
 
 ## Authors
 
