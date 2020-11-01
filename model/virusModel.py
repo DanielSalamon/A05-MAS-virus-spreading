@@ -52,7 +52,7 @@ class VirusModel(Model): # actual simulation
     
     def transition(self,agent):
         if agent.status == "exposed":
-            if agent.incubation_counter == 4: # average incubation period = 4-6 days
+            if agent.incubation_counter == 6: # average incubation period = 4-6 days
                 if(agent.transition_to_infected > rand.random()):   # probability of Exposed -> Infected
                     agent.status = "infected"
                     self.totalInfected += 1
@@ -60,10 +60,10 @@ class VirusModel(Model): # actual simulation
             else: 
                 agent.incubation_counter += 1
         elif agent.status == "infected":
-            if agent.incubation_counter == 7:
+            if agent.incubation_counter == 7: # average infection duration = 3-7 days
                 agent.status = "recovered" #immune
                 self.totalRecovered += 1
-                agent.incubation_counter = 0 # average infection duration = 3-7 days
+                agent.incubation_counter = 0 
             elif(agent.prob_death > rand.random()):
                     # probability of death or recover
                 agent.status = "removed"
@@ -119,7 +119,7 @@ def getPopDistribution(num = 1000):#get population distribution based off real d
     newPop = [0,0,0,0]
     for i in range(4):
         newPop[i] = int((POP[i]/oldPopSize) * newPopSize)
-    print(newPop)
+    
     return newPopSize, newPop
 
 def manipulateAgent(self, agent): # set manipulation settings for certain agent

@@ -36,7 +36,7 @@ def MainProgram(simSettings, live_graph=True, vis=True, table=False, config=None
     maskChance = simSettings[1]
     infected = simSettings[2]
     settings = simSettings[3]
-    print(simSettings)
+   
 
     model = vm.VirusModel(agents, maskChance, infected, settings)
     data_collector = dc.DataCollector()
@@ -117,7 +117,7 @@ def runSingle():
     agents = AGENTS
     infected = INIT_INFECTED
     simSettings = [agents, maskChance, infected, settings]
-    # live_graph_status = True
+  
 
     if LIVE_GRAPH_STATUS:
         f = open("visualisation/visual_data.txt", "w")
@@ -134,7 +134,7 @@ def runSingle():
     else:
         MainProgram(simSettings, live_graph=False)
 
-
+# Function for preliminary search
 def runComplete():
     #os.remove("data/totalSummary.txt")
 	#mask = ['all', 'most', 'half', 'few', 'none']
