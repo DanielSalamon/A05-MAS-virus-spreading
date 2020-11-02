@@ -18,8 +18,7 @@ class Area():
         self.elderly = list()
         self.members = [self.children, self.youngAdults, self.adults, self.elderly]
 
-        self.attack_rate = 0.5 # estimation from paper "Estimation of Individual Probabilities of COVID-19 
-        # Infection, Hospitalization, and Death From A County-level Contact of Unknown infection Status"
+        self.attack_rate = 0.5 # Our estimation of attack rate - might be overestimated
 
 
     def addMember(self, agent): #function to add member change full attribute if capacity reached
@@ -41,7 +40,7 @@ class Area():
         #         agent2.status = "exposed"
 
     def infectionChance(self, agent1, agent2):
-        maskReceiveProb = 0.2 #TODO find the mask transmssion and reception probs
+        maskReceiveProb = 0.2 # Our estimation
         maskTransmitProb = 0.2
         chance = self.attack_rate
 
