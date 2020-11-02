@@ -61,15 +61,17 @@ class VirusModel(Model): # actual simulation
                 agent.incubation_counter += 1
         elif agent.status == "infected":
             if agent.incubation_counter == 7:
-                agent.status = "recovered" #immune
-                self.totalRecovered += 1
-                agent.incubation_counter = 0 # average infection duration = 3-7 days
-            elif(agent.prob_death > rand.random()):
+                if(agent.prob_death > rand.random()):
                     # probability of death or recover
-                agent.status = "removed"
-                self.agents.remove(agent)
-                agent.die()
-                self.removed_agents.append(agent.ageIndex) # append the age group of dead agent
+                    agent.status = "removed"
+                    self.agents.remove(agent)
+                    agent.die()
+                    self.removed_agents.append(agent.ageIndex) # append the age group of dead agent
+                else:
+                    agent.status = "recovered" #immune
+                    self.totalRecovered += 1
+                    agent.incubation_counter = 0 # average infection duration = 3-7 days
+            
             else:
                 agent.incubation_counter += 1
 

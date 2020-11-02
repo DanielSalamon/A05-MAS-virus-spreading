@@ -70,18 +70,18 @@ def visualize_dead_and_recovered_agents(dead, recovered):
 
 	labels = ['Children', 'Young', 'Adults', 'Olds']
 	deaths = [dead[0][0], dead[1][0], dead[2][0], dead[3][0]]
-	rec = [recovered[0][0], recovered[1][0], recovered[2][0], recovered[3][0]]
+	#rec = [recovered[0][0], recovered[1][0], recovered[2][0], recovered[3][0]]
 
 	x = np.arange(len(labels))  # the label locations
 	width = 0.35  # the width of the bars
 
 	fig, ax = plt.subplots()
 	rects1 = ax.bar(x - width/2, deaths, width, label='Died')
-	rects2 = ax.bar(x + width/2, rec, width, label='Recovered')
+	#rects2 = ax.bar(x + width/2, rec, width, label='Recovered')
 
 	# Add some text for labels, title and custom x-axis tick labels, etc.
 	ax.set_ylabel('Numer of agents')
-	ax.set_title('Dead and recovered agents by age group')
+	ax.set_title('Dead agents by age group')
 	ax.set_xticks(x)
 	ax.set_xticklabels(labels)
 	ax.legend()
@@ -99,7 +99,7 @@ def visualize_dead_and_recovered_agents(dead, recovered):
 
 
 	autolabel(rects1)
-	autolabel(rects2)
+	#autolabel(rects2)
 
 	fig.tight_layout()
 

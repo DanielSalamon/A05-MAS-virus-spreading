@@ -15,10 +15,10 @@ AGENTS = 1500  # desired agents the model will have
 INIT_INFECTED = 15  # number of agents infected at the beggining of the simulation
 
 # proportion of agents wearing a mask {'all', 'most', 'half', 'few', 'none'}
-MASKCHANCE = 'all'
+MASKCHANCE = 'few'
 
 # choose how strict the lockdown is taken into account for each agegroup
-SETTINGS = [False, 'severe', 'severe', 'severe', 'severe']
+SETTINGS = [False, 'minimal', 'minimal', 'minimal', 'minimal']
 # choose restrictions as follows: {'none','minimal','moderate','severe,'total'}
 # index0 = whether school is out or not
 # index1 = restrictions for children
@@ -132,19 +132,19 @@ def runSingle():
 
 def runComplete():
     #os.remove("data/totalSummary.txt")
-	#mask = ['all', 'most', 'half', 'few', 'none']
+    mask = ['none', 'few', 'half', 'most', 'all']
 	#lockdown = ['none', 'minimal', 'moderate', 'severe', 'total']
 	#agent = [1, 2, 3, 4]
 
     #school = [True, False]
     #simSets = [False, 'none', 'none', 'none', 'none']
     school = [False]
-    mask = ['few']
+    #mask = ['few']
     lockdown = ['none', 'minimal', 'moderate', 'severe']
     simSets = ['none', 'none',] #younger older
 
 
-    for i in range(5):
+    for i in range(4):
 	    for s in school:
 	        for m in mask:
 	            for young in lockdown:
@@ -158,8 +158,7 @@ def runComplete():
 	                    MainProgram(simSettings, live_graph=False, vis=False, table=True,config=config)
 
 
-
 if __name__ == '__main__':
-
     runSingle()
     #runComplete()
+
