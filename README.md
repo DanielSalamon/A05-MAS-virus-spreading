@@ -36,20 +36,20 @@ Parameters are fixed and based on available research regarding COVID-19 epidemic
 
 After running `python launchModel.py`, the user interface will allow to display default settings of the simulation:
 
-Parameter | Value
--------------|------------
-Number of days (days) |  100
-Population (agents) |  1500
-Initial number of infected (init_infected) |  15
-Mask chance (mask_chance) |  half
-School (school) |  False
-Children lockdown settings (child) |  severe
-Young Adult lockdown settings (young) |  none
-Adult lockdown settings (adult) |  none
-Elderly lockdown settings (old) |  none
-Live graphs (live_graph) | True
+Parameter |Default Value|Possible Values
+-------------|------------|-------------
+Number of days (days) |  100  | integer
+Population (agents) |  1500 | integer
+Initial number of infected (init_infected) |  15  | integer
+Mask chance (mask_chance) |  half | all, most, half, few, none
+School (school) |  False  | true, false
+Children lockdown settings (child) |  severe  | none, minimal, moderate, severe, total
+Young Adult lockdown settings (young) |  none | none, minimal, moderate, severe, total
+Adult lockdown settings (adult) |  none  | none, minimal, moderate, severe, total
+Elderly lockdown settings (old) |  none  | none, minimal, moderate, severe, total
+Live graphs (live_graph) | True | true, false
 
-Those settings can be easily changed by pressing "2" button. The interface will proceed changes and allow to run the simulation.
+These parameters can easily be can initially be passed via the console or can be updated after starting the program by pressing "2"
 
 ## Overview of program files
 
