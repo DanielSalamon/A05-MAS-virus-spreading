@@ -1,4 +1,4 @@
-# Impact of Different Measures and Behaviour Scenarios onCOVID-19 Spread - Agent Based Approach
+# Impact of Different Measures and Behaviour Scenarios on COVID-19 Spread - Agent Based Approach
 
 ## Abstract
 The pandemic of COVID-19 has a significant impact on people’s lifestyle all over the world and has forced countries to adopt different measures to slow its spread. In this study, we constructed an Agent-Based model, which we use to evaluate the influence of different levels of lockdown along with a varying percentage of agents wearing masks. Agents were split up into four age groups according to the population demographics of the Netherlands and were scheduled to meet each other accordingto contact matrices acquired from previous research. After running a preliminary search on each combination of the possible parameters of the simulation, it was found that apart from adopting severe lockdown measures, a great reduction of infection rates can be achieved by reducing socialcontacts by 50% combined with 80% to 100% of the population wearing masks. Furthermore, virus related deaths decreased heavily once lockdown strategies and mask behaviours were enforced onthe elderly agents in the simulation. To reduce infection rate, strategies must apply to each member of the population rather than a single age group. We believe, that this approach will give a clear view on which restrictions are helpful to deal with the pandemic, and discover the consequences of not following the suggested limitations.
@@ -49,7 +49,7 @@ Adult lockdown settings (adult) |  none  | none, minimal, moderate, severe, tota
 Elderly lockdown settings (old) |  none  | none, minimal, moderate, severe, total
 Live graphs (live_graph) | True | true, false
 
-These parameters can easily be can initially be passed via the console or can be updated after starting the program by pressing "2"
+These parameters can easily be can initially be passed via the console or can be updated after starting the program by pressing "2".
 
 ## Overview of program files
 
@@ -70,11 +70,11 @@ These parameters can easily be can initially be passed via the console or can be
 
 ## Output of the program
 
-At the end of simulation, program prints statistics of each age group as well as of the whole population of agents. Moreover, it saves graphs in the "visualisation/plots/" directory, which might be useful for the further analysis. Example output plots from the baseline experiment (without any restrictions) are presented below:
+At the end of the simulation, the program prints statistics of each age group as well as of the whole population of agents. Moreover, it saves graphs in the "visualisation/plots/" directory, which might be useful for the further analysis. Example output plots from the baseline experiment (without any restrictions) are presented below:
 
-<img src="visualisation/plots/noMasks_none_none/Overall.png" width="400" > <img src="visualisation/plots/noMasks_none_none/Child.png" width="400" >
-<img src="visualisation/plots/noMasks_none_none/Young.png" width="400" > <img src="visualisation/plots/noMasks_none_none/Adult.png" width="400" >
-<img src="visualisation/plots/noMasks_none_none/Old.png" width="400" > <img src="visualisation/plots/noMasks_none_none/Deaths.png" width="380" >
+<img src="visualisation/plots/none none none/Overall.png" width="400" > <img src="visualisation/plots/none none none/Child.png" width="400" >
+<img src="visualisation/plots/none none none/Young.png" width="400" > <img src="visualisation/plots/none none none/Adult.png" width="400" >
+<img src="visualisation/plots/none none none/Old.png" width="400" > <img src="visualisation/plots/none none none/Deaths.png" width="380" >
 
 ## Authors
 
