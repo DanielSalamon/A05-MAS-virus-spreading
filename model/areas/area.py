@@ -4,7 +4,8 @@ import random as rand
 
 
 class Area():
-    def __init__(self):
+    def __init__(self, model):
+        self.model = model
         self.capacity = 1 # capacity of agents in one area
         self.memNum = 0 # current number of members
         self.full = False 
@@ -17,8 +18,7 @@ class Area():
         self.elderly = list()
         self.members = [self.children, self.youngAdults, self.adults, self.elderly]
 
-        self.attack_rate = 0.1 # estimation from paper "Estimation of Individual Probabilities of COVID-19 
-        # Infection, Hospitalization, and Death From A County-level Contact of Unknown infection Status"
+        self.attack_rate = 0.5 # Our estimation of attack rate - might be overestimated
 
 
     def addMember(self, agent): #function to add member change full attribute if capacity reached
@@ -29,13 +29,30 @@ class Area():
                 self.full = True
 
     def meet(self, agent1, agent2):# meeting of two agents in certain area
-        if agent1.status == "susceptible" and agent2.status == "infected": 
-            if (self.attack_rate > rand.random()):
+        if agent1.status == "susceptible" and agent2.status == "infected":
+            chance = self.infectionChance(agent1,agent2) 
+            if (chance > rand.random()):
                 agent1.status = "exposed"
+                self.model.totalExposed += 1
 
-        elif agent1.status == "infected" and agent2.status == "susceptible": 
-            if (self.attack_rate > rand.random()):
-                agent2.status = "exposed"
+        # elif agent1.status == "infected" and agent2.status == "susceptible": 
+        #     if (self.attack_rate > rand.random()):
+        #         agent2.status = "exposed"
+
+    def infectionChance(self, agent1, agent2):
+        maskReceiveProb = 0.2 # Our estimation
+        maskTransmitProb = 0.2
+        chance = self.attack_rate
+
+        if agent1.mask and agent2.mask:
+            chance = chance * (1-(maskTransmitProb + maskTransmitProb))
+        elif agent1.mask:
+            chance = chance * (1-maskReceiveProb)
+        elif agent2.mask:
+            chance = chance * (1-maskTransmitProb)
+        
+        return chance
+
 
     def removeAgent(self, agent): #remove agent from corresponding list
         if isinstance(agent, ChildAgent):
