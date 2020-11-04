@@ -74,9 +74,9 @@ These parameters can easily be can initially be passed via the console or can be
 
 At the end of the simulation, the program prints statistics of each age group as well as of the whole population of agents. Moreover, it saves graphs in the "visualisation/plots/" directory, which might be useful for the further analysis. Example output plots from the baseline experiment (without any restrictions) are presented below:
 
-<img src="visualisation/plots/none none none/Overall.png" width="400" > <img src="visualisation/plots/none none none/Child.png" width="400" >
-<img src="visualisation/plots/none none none/Young.png" width="400" > <img src="visualisation/plots/none none none/Adult.png" width="400" >
-<img src="visualisation/plots/none none none/Old.png" width="400" > <img src="visualisation/plots/none none none/Deaths.png" width="380" >
+<img src="visualisation/plots/Example plots/none none none/Overall.png" width="400" > <img src="visualisation/plots/Example plots/none none none/Child.png" width="400" >
+<img src="visualisation/plots/Example plots/none none none/Young.png" width="400" > <img src="visualisation/plots/Example plots/none none none/Adult.png" width="400" >
+<img src="visualisation/plots/Example plots/none none none/Old.png" width="400" > <img src="visualisation/plots/Example plots/none none none/Deaths.png" width="380" >
 
 ## Authors
 
